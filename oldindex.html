@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christine Zhao</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Left Nav Bar -->
+    <aside class="nav-bar">
+        <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-wordmark">Christine Zhao</div>
+    </aside>
+
+    <!-- Overlay -->
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+
+    <!-- Folder Navigation -->
+    <nav class="nav-folders" id="navFolders">
+        <a href="index.html" class="folder-tab tab-home active">
+            <span class="tab-title">Home</span>
+        </a>
+        <a href="projects.html" class="folder-tab tab-projects">
+            <span class="tab-title">Projects</span>
+        </a>
+        <a href="graphic-design.html" class="folder-tab tab-graphic">
+            <span class="tab-title">Graphic Design</span>
+        </a>
+        <a href="print.html" class="folder-tab tab-print">
+            <span class="tab-title">Print</span>
+        </a>
+        <a href="personal.html" class="folder-tab tab-photo">
+            <span class="tab-title">Photography</span>
+        </a>
+        <a href="dschool.html" class="folder-tab tab-dschool">
+            <span class="tab-title">d.school</span>
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="scrap-badge">portfolio // 2025</div>
+            <h1 class="hero-name">
+                Hi, I'm<br><em>Christine</em>
+            </h1>
+            <p class="hero-tagline">
+                I design products<br>and build things.
+            </p>
+            <span class="deco deco-star">✦</span>
+            <span class="deco deco-dot"></span>
+        </section>
+
+        <!-- Role strip -->
+        <div class="about-strip">
+            <span class="role">product designer</span>
+            <span class="sep">—</span>
+            <span class="role">ux researcher</span>
+            <span class="sep">—</span>
+            <span class="role">visual storyteller</span>
+            <span class="sep">—</span>
+            <span class="role">stanford university</span>
+        </div>
+
+        <!-- Selected Work -->
+        <section>
+            <div class="section-header">
+                <span class="label">Selected Work</span>
+                <span class="rule"></span>
+            </div>
+
+            <div class="projects-grid">
+
+                <article class="project-card card-rot-r">
+                    <div class="card-img img-coral">
+                        <span class="card-img-label">[ image ]</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>On Call Café</h3>
+                        <p>Led creative direction and marketing initiatives for an independent café brand.</p>
+                        <div class="tags">
+                            <span class="tag">branding</span>
+                            <span class="tag">marketing</span>
+                            <span class="tag">creative direction</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card card-rot-l">
+                    <div class="card-img img-blue">
+                        <span class="card-img-label">[ image ]</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>Beli UX</h3>
+                        <p>Designed a collaborative list feature for restaurant discovery and social sharing.</p>
+                        <div class="tags">
+                            <span class="tag">ux design</span>
+                            <span class="tag">research</span>
+                            <span class="tag">prototyping</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card card-rot-s">
+                    <div class="card-img img-cream">
+                        <span class="card-img-label">[ coming soon ]</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>Next Project</h3>
+                        <p>Something new in progress.</p>
+                        <div class="tags">
+                            <span class="tag">tbd</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function toggleNav() {
+            const isOpen = document.getElementById('navFolders').classList.toggle('open');
+            document.getElementById('navToggle').classList.toggle('active');
+            document.getElementById('navOverlay').classList.toggle('visible', isOpen);
+        }
+        function closeNav() {
+            document.getElementById('navFolders').classList.remove('open');
+            document.getElementById('navToggle').classList.remove('active');
+            document.getElementById('navOverlay').classList.remove('visible');
+        }
+    </script>
+
+</body>
+</html>

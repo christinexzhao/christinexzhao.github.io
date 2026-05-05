@@ -1,0 +1,514 @@
+/* ================================================
+   CHRISTINE ZHAO — PORTFOLIO
+   ================================================ */
+
+/* --- Reset & Variables --- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --coral:    #E06B52;
+    --blue:     #1E2D5A;
+    --black:    #1A1A1A;
+    --white:    #FAFAF8;
+    --cream:    #F4F1EB;
+    --gray:     #D5D2CC;
+    --light:    #EDEAE4;
+    --sans:     'DM Sans', system-ui, sans-serif;
+    --serif:    'Playfair Display', Georgia, serif;
+    --nav-w:    52px;
+}
+
+html, body { height: 100%; }
+
+body {
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--sans);
+    overflow-x: hidden;
+}
+
+/* ================================================
+   LEFT NAV BAR (thin fixed strip)
+   ================================================ */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--nav-w);
+    height: 100vh;
+    background: var(--white);
+    border-right: 1.5px solid var(--black);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 0 24px;
+}
+
+.nav-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 8px;
+    flex-shrink: 0;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background: var(--black);
+    transition: transform 0.28s ease, opacity 0.28s ease;
+    transform-origin: center;
+}
+
+.nav-toggle.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.nav-wordmark {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--black);
+    opacity: 0.3;
+    margin-top: auto;
+    padding-bottom: 4px;
+    user-select: none;
+    text-transform: uppercase;
+}
+
+/* ================================================
+   FOLDER NAVIGATION PANEL
+   ================================================ */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.15);
+    z-index: 185;
+    backdrop-filter: blur(1px);
+}
+.nav-overlay.visible { display: block; }
+
+.nav-folders {
+    position: fixed;
+    top: 0;
+    left: var(--nav-w);
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    transform: translateX(calc(-100% - var(--nav-w)));
+    transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 190;
+    overflow: visible;
+}
+
+.nav-folders.open { transform: translateX(0); }
+
+.folder-tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 58px;
+    height: 100vh;
+    padding: 0;
+    text-decoration: none;
+    color: var(--black);
+    border-right: 1.5px solid var(--border-c);
+    border-top: 1.5px solid var(--border-c);
+    border-bottom: 1.5px solid var(--border-c);
+    overflow: visible;
+    transition: background 0.2s ease, transform 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.folder-tab:first-child { border-left: 1.5px solid var(--border-c); }
+
+/* Right-protruding trapezoid tab, staggered vertically.
+   --tp stores each tab's vertical position so both pseudo-elements stay in sync.
+   Descending z-index ensures each tab sits on top of the next panel. */
+.tab-home     { background: #F8F6F2; z-index: 6; --tp: 8%;  --tab-bg: #F8F6F2; --border-c: var(--black); color: var(--black); }
+.tab-projects { background: #F3F0EA; z-index: 5; --tp: 22%; --tab-bg: #F3F0EA; --border-c: var(--black); color: var(--black); }
+.tab-graphic  { background: #EDEBE4; z-index: 4; --tp: 36%; --tab-bg: #EDEBE4; --border-c: var(--black); color: var(--black); }
+.tab-print    { background: #E8E4DC; z-index: 3; --tp: 50%; --tab-bg: #E8E4DC; --border-c: var(--black); color: var(--black); }
+.tab-photo    { background: #E3DED6; z-index: 2; --tp: 64%; --tab-bg: #E3DED6; --border-c: var(--black); color: var(--black); }
+.tab-dschool  { background: #DED9D0; z-index: 1; --tp: 78%; --tab-bg: #DED9D0; --border-c: var(--black); color: var(--black); }
+
+/* ::before — border layer (slightly larger, behind the fill) */
+.folder-tab::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--tp) - 1.5px);
+    right: -27px;
+    width: 27px;
+    height: 130px;
+    background: var(--border-c);
+    clip-path: polygon(0 0, 100% 8%, 100% 92%, 0 100%);
+}
+
+/* ::after — fill layer (panel color, trapezoid on top of border layer) */
+.folder-tab::after {
+    content: '';
+    position: absolute;
+    top: var(--tp);
+    right: -25px;
+    width: 25px;
+    height: 126px;
+    background: inherit;
+    clip-path: polygon(0 0, 100% 8%, 100% 92%, 0 100%);
+}
+
+.folder-tab:hover { transform: translateX(10px); box-shadow: -10px 0 0 0 var(--tab-bg); }
+
+.folder-tab.active                { background: var(--white) !important; }
+.folder-tab.active .tab-title     { color: var(--coral); opacity: 1; }
+
+/* Text placed on the trapezoid tab, rotated 90° */
+.tab-title {
+    position: absolute;
+    right: -25px;
+    top: var(--tp);
+    width: 25px;
+    height: 126px;
+    writing-mode: vertical-rl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.folder-tab:hover .tab-title { opacity: 1; }
+
+/* ================================================
+   MAIN CONTENT WRAPPER
+   ================================================ */
+.main-content {
+    margin-left: var(--nav-w);
+    min-height: 100vh;
+    padding: 64px 80px 96px;
+}
+
+/* ================================================
+   HERO — index.html
+   ================================================ */
+.hero {
+    position: relative;
+    margin-bottom: 52px;
+    padding-top: 28px;
+}
+
+.scrap-badge {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--blue);
+    color: var(--white);
+    padding: 5px 12px;
+    transform: rotate(-1.4deg);
+    margin-bottom: 30px;
+}
+
+.hero-name {
+    font-family: var(--serif);
+    font-size: clamp(72px, 9vw, 130px);
+    font-weight: 400;
+    line-height: 0.88;
+    letter-spacing: -0.025em;
+    margin-bottom: 30px;
+}
+
+.hero-name em {
+    font-style: italic;
+    color: var(--coral);
+}
+
+.hero-tagline {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.9;
+    opacity: 0.5;
+    letter-spacing: 0.02em;
+}
+
+/* Floating decorations */
+.deco {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+}
+
+.deco-star {
+    top: 20px;
+    right: 160px;
+    font-size: 42px;
+    color: var(--coral);
+    animation: spin-slow 28s linear infinite;
+}
+
+.deco-dot {
+    bottom: 0;
+    right: 112px;
+    width: 11px;
+    height: 11px;
+    background: var(--blue);
+    border-radius: 50%;
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ================================================
+   ABOUT STRIP
+   ================================================ */
+.about-strip {
+    border-top: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
+    padding: 11px 0;
+    margin-bottom: 84px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    overflow: hidden;
+}
+
+.about-strip .role {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.about-strip .sep {
+    opacity: 0.22;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* ================================================
+   SECTION HEADER
+   ================================================ */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 52px;
+}
+
+.section-header .label {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+
+.section-header .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--black);
+    opacity: 0.14;
+}
+
+/* ================================================
+   PROJECTS GRID
+   ================================================ */
+.projects-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px 52px;
+    align-items: flex-start;
+}
+
+/* ================================================
+   PROJECT CARDS — Polaroid style
+   ================================================ */
+.project-card {
+    position: relative;
+    width: 268px;
+    background: #fff;
+    box-shadow: 3px 6px 26px rgba(0,0,0,0.09), 0 0 0 1px rgba(0,0,0,0.06);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    cursor: pointer;
+}
+
+.project-card:hover {
+    transform: translateY(-6px) rotate(0deg) !important;
+    box-shadow: 6px 14px 44px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.07);
+}
+
+.card-rot-r { transform: rotate(1.8deg); }
+.card-rot-l { transform: rotate(-2.2deg); }
+.card-rot-s { transform: rotate(0.7deg); }
+
+/* Washi tape strip at top of each card */
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-1deg);
+    width: 54px;
+    height: 22px;
+    background: rgba(224, 107, 82, 0.2);
+    border: 1px solid rgba(224, 107, 82, 0.12);
+}
+
+.project-card:nth-child(2)::before {
+    background: rgba(30, 45, 90, 0.12);
+    border-color: rgba(30, 45, 90, 0.08);
+    transform: translateX(-50%) rotate(1.5deg);
+}
+
+.project-card:nth-child(3)::after {
+    content: '✦';
+    position: absolute;
+    bottom: -22px;
+    right: 12px;
+    color: var(--coral);
+    font-size: 18px;
+    transform: rotate(18deg);
+}
+
+.card-img {
+    width: 100%;
+    height: 192px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-img-label {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    opacity: 0.28;
+}
+
+.img-coral { background: #F7EBE8; }
+.img-blue  { background: #E8EBF7; }
+.img-cream { background: #F2F0EB; }
+
+.card-body {
+    padding: 16px 18px 20px;
+    border-top: 1px solid var(--gray);
+}
+
+.card-body h3 {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    line-height: 1.2;
+}
+
+.card-body p {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.65;
+    opacity: 0.5;
+    margin-bottom: 14px;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.tag {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border: 1px solid var(--black);
+    opacity: 0.4;
+}
+
+/* ================================================
+   INNER PAGE HEADER
+   ================================================ */
+.page-header {
+    padding-top: 28px;
+    margin-bottom: 64px;
+    position: relative;
+}
+
+.page-title {
+    font-family: var(--serif);
+    font-size: clamp(48px, 6vw, 84px);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+}
+
+.page-title em {
+    font-style: italic;
+    color: var(--coral);
+}
+
+.page-desc {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.8;
+    opacity: 0.48;
+    max-width: 400px;
+}
+
+/* ================================================
+   PLACEHOLDER GRID — inner pages
+   ================================================ */
+.placeholder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 28px;
+}
+
+.placeholder-block {
+    background: var(--cream);
+    border: 1px dashed var(--gray);
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 0.4;
+    transition: opacity 0.2s ease;
+}
+
+.placeholder-block:hover { opacity: 0.6; }
+
+.placeholder-block .ph-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
