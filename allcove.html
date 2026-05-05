@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christine Z — allcove</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --white:#FAFAF8; --navy:#1E2840; --black:#1A1A1A; --gray:#666; --sans:'Archivo',system-ui,sans-serif; --black-font:'Archivo Black',system-ui,sans-serif; --serif:'Playfair Display',Georgia,serif; }
+        body { background:var(--white); color:var(--black); font-family:var(--sans); text-transform:lowercase; min-height:100vh; display:flex; flex-direction:column; }
+        .site-header { position:fixed; top:0; right:0; padding:20px 32px; z-index:100; }
+        .site-header h1 { font-family:var(--black-font); font-size:18px; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; }
+        .site-header a { text-decoration:none; color:inherit; }
+        .nav-toggle { position:fixed; top:20px; left:28px; z-index:200; background:none; border:none; cursor:pointer; display:flex; flex-direction:column; gap:5px; padding:4px; }
+        .nav-toggle span { display:block; width:24px; height:1.5px; background:var(--black); transition:transform 0.3s ease,opacity 0.3s ease; }
+        .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);} .nav-toggle.open span:nth-child(2){opacity:0;} .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+        .nav-menu { position:fixed; top:0; left:0; width:260px; height:100vh; background:var(--white); border-right:1px solid rgba(0,0,0,0.1); z-index:150; display:flex; flex-direction:column; justify-content:center; padding:60px 40px; transform:translateX(-100%); transition:transform 0.38s cubic-bezier(0.4,0,0.2,1); }
+        .nav-menu.open{transform:translateX(0);} .nav-menu a{font-family:var(--black-font);font-size:20px;font-weight:400;letter-spacing:0.02em;text-transform:lowercase;color:var(--black);text-decoration:none;margin-bottom:28px;opacity:0.4;transition:opacity 0.2s ease;} .nav-menu a:hover,.nav-menu a.active{opacity:1;} .nav-menu a:last-child{position:absolute;bottom:60px;}
+        .nav-overlay{position:fixed;inset:0;z-index:140;display:none;} .nav-overlay.visible{display:block;}
+        .hero{width:100%;height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#1a1a1a;}
+        .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.6) 100%);}
+        .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1;transition:opacity 0.1s linear;pointer-events:none;}
+        .hero-meta{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:0 40px;}
+        .hero-left h2{font-family:var(--black-font);font-size:clamp(40px,6vw,80px);font-weight:400;color:#fff;line-height:1;letter-spacing:-0.02em;}
+        .hero-tagline{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2vw,20px);color:rgba(255,255,255,0.75);margin-top:12px;line-height:1.4;}
+        .hero-right{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:8px;}
+        .hero-role{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;}
+        .hero-tags{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+        .tag{font-size:10.5px;letter-spacing:0.05em;border:1px solid rgba(255,255,255,0.45);padding:3px 10px;border-radius:20px;color:rgba(255,255,255,0.8);}
+        .scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;font-size:11px;letter-spacing:0.1em;color:rgba(255,255,255,0.4);display:flex;flex-direction:column;align-items:center;gap:6px;}
+        .scroll-hint::after{content:'';display:block;width:1px;height:32px;background:rgba(255,255,255,0.3);}
+        main{flex:1;} .case-study{max-width:760px;margin:0 auto;padding:80px 40px 100px;}
+        .section{margin-bottom:72px;} .section-label{font-size:10.5px;letter-spacing:0.14em;opacity:0.35;margin-bottom:16px;display:block;}
+        .section h3{font-family:var(--black-font);font-size:26px;font-weight:400;margin-bottom:20px;line-height:1.2;}
+        .section p{font-size:15px;line-height:1.85;color:var(--black);margin-bottom:16px;opacity:0.85;}
+        .divider{width:100%;height:1px;background:rgba(0,0,0,0.1);margin-bottom:72px;}
+        .back-link{display:inline-block;font-size:12px;letter-spacing:0.05em;color:var(--gray);text-decoration:none;border-bottom:1px solid currentColor;margin-bottom:56px;transition:color 0.2s ease;} .back-link:hover{color:var(--black);}
+        .transition-overlay{position:fixed;inset:0;background:var(--navy);z-index:9999;pointer-events:none;transform:translateY(100%);transition:transform 0.55s cubic-bezier(0.76,0,0.24,1);}
+        .transition-overlay.slide-in-up{transform:translateY(0);} .transition-overlay.slide-in-down{transform:translateY(0);transition:none;} .transition-overlay.slide-out-up{transform:translateY(-100%);} .transition-overlay.slide-out-down{transform:translateY(100%);}
+        .site-footer{background:var(--navy);color:rgba(255,255,255,0.55);font-size:12px;font-family:var(--sans);letter-spacing:0.08em;text-transform:lowercase;padding:20px 60px;}
+            .footer-icons { display: flex; gap: 16px; align-items: center; }
+        .footer-icons a { color: rgba(255,255,255,0.55); transition: color 0.2s ease; display: flex; }
+        .footer-icons a:hover { color: rgba(255,255,255,1); }
+    </style>
+</head>
+<body>
+    <div class="transition-overlay" id="transitionOverlay"></div>
+    <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="menu"><span></span><span></span><span></span></button>
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+    <nav class="nav-menu" id="navMenu">
+        <a href="scrollprojects.html">selected projects</a>
+        <a href="branding.html" class="active">branding</a>
+        <a href="printpublications.html">print publications</a>
+        <a href="personal.html">personal</a>
+        <a href="about.html">about me</a>
+    </nav>
+    <header class="site-header"><a href="index.html"><h1>Christine Z</h1></a></header>
+
+    <div class="hero">
+        <div class="hero-overlay" id="heroOverlay"></div>
+        <div class="hero-meta">
+            <div class="hero-left">
+                <h2>allcove</h2>
+                <p class="hero-tagline">[ tagline ]</p>
+            </div>
+            <div class="hero-right">
+                <p class="hero-role">[ role ] · [ duration ]</p>
+                <div class="hero-tags">
+                    <span class="tag">[ tag ]</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint">scroll</div>
+    </div>
+
+    <main><div class="case-study">
+        <a href="branding.html" class="back-link">← back to branding</a>
+        <div class="divider"></div>
+        <div class="section">
+            <span class="section-label">01 — what is it</span>
+            <h3>[ heading ]</h3>
+            <p>[ description ]</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <span class="section-label">02 — what i did</span>
+            <h3>[ heading ]</h3>
+            <p>[ description ]</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <span class="section-label">03 — what i've learned</span>
+            <h3>[ heading ]</h3>
+            <p>[ description ]</p>
+        </div>
+    </div></main>
+
+    <footer class="site-footer">Christine Zhao © 2026
+        <div class="footer-icons">
+            <a href="mailto:chrzhao@stanford.edu" title="email" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/christine-zhao/" title="linkedin" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://docs.google.com/document/d/e/2PACX-1vTQKU-YS7dxEbHs5rHO5EJvOMKOC45Jk4Fn0W0msWTnugqCCU1Mi_VJdQi4lpZCD8KsX2klMEfvL2FV/pub" title="resume" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            </a>
+        </div>
+    </footer>
+    <script>
+        const overlay = document.getElementById('transitionOverlay');
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('enter')) {
+            overlay.classList.add('slide-in-up');
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
+                overlay.classList.remove('slide-in-up'); overlay.classList.add('slide-out-up');
+            }));
+        }
+        if (params.get('scrollbottom')) {
+            overlay.classList.add('slide-in-down');
+            document.documentElement.style.scrollBehavior = 'auto';
+            window.scrollTo(0, document.body.scrollHeight);
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
+                overlay.classList.remove('slide-in-down'); overlay.classList.add('slide-out-down');
+            }));
+        }
+        let navFired = false;
+        window.addEventListener('wheel', (e) => {
+            if (navFired) return;
+            if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 8 && e.deltaY > 0) {
+                navFired = true;
+                overlay.style.transition = 'none';
+                overlay.classList.remove('slide-in-up','slide-in-down','slide-out-up','slide-out-down');
+                overlay.getBoundingClientRect();
+                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
+                overlay.classList.add('slide-in-up');
+                setTimeout(() => { window.location.href = 'branding.html?from=allcove'; }, 580);
+            }
+        }, { passive: true });
+        window.addEventListener('scroll', () => {
+            document.getElementById('heroOverlay').style.opacity = 1 - Math.min(window.scrollY / (window.innerHeight * 0.5), 1);
+        });
+        function toggleNav() { const open = document.getElementById('navMenu').classList.toggle('open'); document.getElementById('navToggle').classList.toggle('open', open); document.getElementById('navOverlay').classList.toggle('visible', open); }
+        function closeNav() { document.getElementById('navMenu').classList.remove('open'); document.getElementById('navToggle').classList.remove('open'); document.getElementById('navOverlay').classList.remove('visible'); }
+    </script>
+</body>
+</html>

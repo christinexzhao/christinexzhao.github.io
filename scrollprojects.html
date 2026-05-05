@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christine Z — Selected Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --white:      #FAFAF8;
+            --navy:       #1E2840;
+            --black:      #1A1A1A;
+            --gray:       #888;
+            --sans:       'Archivo', system-ui, sans-serif;
+            --black-font: 'Archivo Black', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--white);
+            color: var(--black);
+            font-family: var(--sans);
+            text-transform: lowercase;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 20px 32px;
+            z-index: 300;
+            mix-blend-mode: multiply;
+        }
+
+        .site-header h1 {
+            font-family: var(--black-font);
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .site-header a { text-decoration: none; color: inherit; }
+
+        /* ── HAMBURGER ── */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            left: 28px;
+            z-index: 400;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 4px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: var(--black);
+            transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+        }
+
+        .nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .nav-toggle.open span:nth-child(2) { opacity: 0; }
+        .nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        /* ── NAV MENU ── */
+        .nav-menu {
+            position: fixed;
+            top: 0; left: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--white);
+            border-right: 1px solid rgba(0,0,0,0.1);
+            z-index: 350;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 40px;
+            transform: translateX(-100%);
+            transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-menu.open { transform: translateX(0); }
+
+        .nav-menu a {
+            font-family: var(--black-font);
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            text-transform: lowercase;
+            color: var(--black);
+            text-decoration: none;
+            margin-bottom: 28px;
+            opacity: 0.4;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-menu a:hover { opacity: 1; }
+        .nav-menu a:last-child { position: absolute; bottom: 60px; }
+        .nav-menu a.active { opacity: 1; }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 340;
+            display: none;
+        }
+        .nav-overlay.visible { display: block; }
+
+        /* ── FULLSCREEN BG ── */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .bg-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bg-layer::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .bg-layer.visible { opacity: 1; }
+
+        /* ── PROJECT LIST ── */
+        .project-list {
+            position: relative;
+            z-index: 10;
+            padding: 140px 80px 80px;
+        }
+
+        .project-item {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            padding: 20px 0;
+            border-top: 1px solid rgba(0,0,0,0.12);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .project-item:last-child { border-bottom: 1px solid rgba(0,0,0,0.12); }
+
+        .project-inner {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .project-name {
+            font-family: var(--black-font);
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .tag {
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(0,0,0,0.22);
+            padding: 3px 9px;
+            border-radius: 20px;
+            opacity: 0.5;
+        }
+
+        /* dim other items on hover */
+        .project-list:has(.project-item:hover) .project-item:not(:hover) .project-name,
+        .project-list:has(.project-item.active) .project-item:not(.active) .project-name {
+            opacity: 0.2;
+        }
+
+        /* text turns white when bg is showing */
+        .project-list:has(.project-item:hover) .project-item:hover .project-name,
+        .project-list:has(.project-item:hover) .project-item:hover .tag,
+        .project-item.active .project-name,
+        .project-item.active .tag {
+            color: #fff;
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        /* clear active state on any hover */
+        .project-list:has(.project-item:hover) .project-item.active .project-name,
+        .project-list:has(.project-item:hover) .project-item.active .tag {
+            color: inherit;
+            border-color: rgba(0,0,0,0.22);
+        }
+
+        /* ── PAGE TRANSITION ── */
+        .transition-overlay {
+            position: fixed;
+            inset: 0;
+            background: #1E2840;
+            z-index: 9999;
+            pointer-events: none;
+            transform: translateY(-100%);
+            transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+        .transition-overlay.slide-in-up   { transform: translateY(0); transition: none; }
+        .transition-overlay.slide-out-up  { transform: translateY(-100%); }
+        .transition-overlay.slide-in-down { transform: translateY(0); }
+        .transition-overlay.slide-out-down { transform: translateY(100%); }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            position: relative;
+            z-index: 10;
+            background: var(--navy);
+            color: rgba(255,255,255,0.55);
+            font-size: 12px;
+            font-family: var(--sans);
+            letter-spacing: 0.08em;
+            text-transform: lowercase;
+            padding: 20px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-icons { display: flex; gap: 16px; align-items: center; }
+        .footer-icons a { color: rgba(255,255,255,0.55); transition: color 0.2s ease; display: flex; }
+        .footer-icons a:hover { color: rgba(255,255,255,1); }
+    </style>
+</head>
+<body>
+
+    <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="transition-overlay" id="transitionOverlay"></div>
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+
+    <nav class="nav-menu" id="navMenu">
+        <a href="scrollprojects.html" class="active">selected projects</a>
+        <a href="branding.html">branding</a>
+        <a href="printpublications.html">print publications</a>
+        <a href="personal.html">personal</a>
+        <a href="about.html">about me</a>
+    </nav>
+
+    <header class="site-header">
+        <a href="index.html"><h1>Christine Z</h1></a>
+    </header>
+
+    <!-- Fullscreen background images -->
+    <div class="bg-layer" id="bg-oncall">
+        <img src="images/on%20call/oncall.JPG" alt="">
+    </div>
+    <div class="bg-layer" id="bg-log">
+        <img src="images/log.png" alt="">
+    </div>
+    <div class="bg-layer" id="bg-beli">
+        <img src="images/beli/beli.png" alt="">
+    </div>
+    <div class="bg-layer" id="bg-alegio">
+        <img src="images/alegio/alegio.jpg" alt="">
+    </div>
+    <div class="bg-layer" id="bg-sourmilk">
+        <img src="images/sourmilk/sourmilkaisle.jpg" alt="">
+    </div>
+
+    <div class="project-list">
+
+        <a href="oncallcafe.html" class="project-item"
+           data-bg="bg-oncall"
+           onmouseenter="showBg(this)"
+           onmouseleave="hideBg(this)">
+            <div class="project-inner">
+                <span class="project-name">on call café</span>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span class="tag">product management</span>
+                        <span class="tag">branding</span>
+                        <span class="tag">physical</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="alegiochocolate.html" class="project-item"
+           data-bg="bg-alegio"
+           onmouseenter="showBg(this)"
+           onmouseleave="hideBg(this)">
+            <div class="project-inner">
+                <span class="project-name">alegio chocolate</span>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span class="tag">UI/UX</span>
+                        <span class="tag">product management</span>
+                        <span class="tag">consumer research</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="beliapp.html" class="project-item"
+           data-bg="bg-beli"
+           onmouseenter="showBg(this)"
+           onmouseleave="hideBg(this)">
+            <div class="project-inner">
+                <span class="project-name">beli app</span>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span class="tag">UI/UX</span>
+                        <span class="tag">user research</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="logapp.html" class="project-item"
+           data-bg="bg-log"
+           onmouseenter="showBg(this)"
+           onmouseleave="hideBg(this)">
+            <div class="project-inner">
+                <span class="project-name">log app</span>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span class="tag">UI/UX</span>
+                        <span class="tag">branding</span>
+                        <span class="tag">user research</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="sourmilk.html" class="project-item"
+           data-bg="bg-sourmilk"
+           onmouseenter="showBg(this)"
+           onmouseleave="hideBg(this)">
+            <div class="project-inner">
+                <span class="project-name">sourmilk</span>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span class="tag">UI/UX</span>
+                        <span class="tag">branding</span>
+                        <span class="tag">SEO</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+    <footer class="site-footer">
+        Christine Zhao © 2026
+        <div class="footer-icons">
+            <a href="mailto:chrzhao@stanford.edu" title="email" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/christine-zhao/" title="linkedin" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://docs.google.com/document/d/e/2PACX-1vTQKU-YS7dxEbHs5rHO5EJvOMKOC45Jk4Fn0W0msWTnugqCCU1Mi_VJdQi4lpZCD8KsX2klMEfvL2FV/pub" title="resume" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        const overlay = document.getElementById('transitionOverlay');
+        const fromPage = new URLSearchParams(window.location.search).get('from');
+
+        const bgMap = { oncall: 'bg-oncall', alegio: 'bg-alegio', beli: 'bg-beli', log: 'bg-log', sourmilk: 'bg-sourmilk' };
+        const returnMap = { oncall: 'oncallcafe.html', alegio: 'alegiochocolate.html', beli: 'beliapp.html', log: 'logapp.html', sourmilk: 'sourmilk.html' };
+
+        if (fromPage === 'oncall') {
+            // arrived sliding up — overlay starts covering screen, slides off upward
+            overlay.classList.add('slide-in-up');
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)';
+                overlay.classList.remove('slide-in-up');
+                overlay.classList.add('slide-out-up');
+            }));
+
+            // show oncall bg + active state immediately
+            const bg = document.getElementById('bg-oncall');
+            bg.style.transition = 'none';
+            bg.classList.add('visible');
+
+            const oncallItem = document.querySelector('[data-bg="bg-oncall"]');
+            oncallItem.classList.add('active');
+            document.querySelectorAll('.project-item').forEach(item => {
+                item.addEventListener('mouseenter', () => oncallItem.classList.remove('active'), { once: true });
+            });
+
+            // scroll up at top → slide overlay down → go back to oncallcafe bottom
+            let backFired = false;
+            window.addEventListener('wheel', (e) => {
+                if (backFired) return;
+                if (window.scrollY === 0 && e.deltaY < 0) {
+                    backFired = true;
+                    overlay.style.transition = 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)';
+                    overlay.classList.remove('slide-out-up');
+                    overlay.classList.add('slide-in-down');
+                    setTimeout(() => {
+                        window.location.href = 'oncallcafe.html?scrollbottom=1';
+                    }, 580);
+                }
+            }, { passive: true });
+        }
+
+        // generic handler for non-oncall project arrivals
+        if (fromPage && fromPage !== 'oncall' && bgMap[fromPage]) {
+            overlay.classList.add('slide-in-up');
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)';
+                overlay.classList.remove('slide-in-up');
+                overlay.classList.add('slide-out-up');
+            }));
+
+            const bg = document.getElementById(bgMap[fromPage]);
+            if (bg) { bg.style.transition = 'none'; bg.classList.add('visible'); }
+
+            const activeItem = document.querySelector(`[data-bg="${bgMap[fromPage]}"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+                document.querySelectorAll('.project-item').forEach(item => {
+                    item.addEventListener('mouseenter', () => activeItem.classList.remove('active'), { once: true });
+                });
+            }
+
+            let backFired = false;
+            window.addEventListener('wheel', (e) => {
+                if (backFired) return;
+                if (window.scrollY === 0 && e.deltaY < 0) {
+                    backFired = true;
+                    overlay.style.transition = 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)';
+                    overlay.classList.remove('slide-out-up');
+                    overlay.classList.add('slide-in-down');
+                    setTimeout(() => { window.location.href = returnMap[fromPage] + '?scrollbottom=1'; }, 580);
+                }
+            }, { passive: true });
+        }
+
+        // intercept project clicks → curtain up → navigate
+        document.querySelectorAll('.project-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (!href || href === '#') return;
+                e.preventDefault();
+                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)';
+                overlay.classList.remove('slide-out-up', 'slide-out-down');
+                overlay.classList.add('slide-in-up');
+                setTimeout(() => { window.location.href = href + '?enter=1'; }, 580);
+            });
+        });
+
+        function showBg(el) {
+            const id = el.dataset.bg;
+            if (id) document.getElementById(id).classList.add('visible');
+        }
+
+        function hideBg(el) {
+            const id = el.dataset.bg;
+            if (id) document.getElementById(id).classList.remove('visible');
+        }
+
+        function toggleNav() {
+            const open = document.getElementById('navMenu').classList.toggle('open');
+            document.getElementById('navToggle').classList.toggle('open', open);
+            document.getElementById('navOverlay').classList.toggle('visible', open);
+        }
+
+        function closeNav() {
+            document.getElementById('navMenu').classList.remove('open');
+            document.getElementById('navToggle').classList.remove('open');
+            document.getElementById('navOverlay').classList.remove('visible');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christine Z — Personal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --white:#FAFAF8; --navy:#1E2840; --black:#1A1A1A; --gray:#888; --sans:'Archivo',system-ui,sans-serif; --black-font:'Archivo Black',system-ui,sans-serif; --serif:'Playfair Display',Georgia,serif; }
+        body { background:var(--white); color:var(--black); font-family:var(--sans); text-transform:lowercase; min-height:100vh; display:flex; flex-direction:column; }
+        .site-header { position:fixed; top:0; right:0; padding:20px 32px; z-index:300; }
+        .site-header h1 { font-family:var(--black-font); font-size:18px; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; }
+        .site-header a { text-decoration:none; color:inherit; }
+        .nav-toggle { position:fixed; top:20px; left:28px; z-index:400; background:none; border:none; cursor:pointer; display:flex; flex-direction:column; gap:5px; padding:4px; }
+        .nav-toggle span { display:block; width:24px; height:1.5px; background:var(--black); transition:transform 0.3s ease,opacity 0.3s ease; }
+        .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);} .nav-toggle.open span:nth-child(2){opacity:0;} .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+        .nav-menu { position:fixed; top:0; left:0; width:260px; height:100vh; background:var(--white); border-right:1px solid rgba(0,0,0,0.1); z-index:350; display:flex; flex-direction:column; justify-content:center; padding:60px 40px; transform:translateX(-100%); transition:transform 0.38s cubic-bezier(0.4,0,0.2,1); }
+        .nav-menu.open{transform:translateX(0);} .nav-menu a{font-family:var(--black-font);font-size:20px;font-weight:400;letter-spacing:0.02em;text-transform:lowercase;color:var(--black);text-decoration:none;margin-bottom:28px;opacity:0.4;transition:opacity 0.2s ease;} .nav-menu a:hover,.nav-menu a.active{opacity:1;} .nav-menu a:last-child{position:absolute;bottom:60px;}
+        .nav-overlay{position:fixed;inset:0;z-index:340;display:none;} .nav-overlay.visible{display:block;}
+
+        /* ── ACCORDION LIST ── */
+        .project-list { flex:1; position:relative; z-index:10; padding:140px 80px 80px; }
+
+        .accordion-item { border-top:1px solid rgba(0,0,0,0.12); }
+        .accordion-item:last-child { border-bottom:1px solid rgba(0,0,0,0.12); }
+
+        .accordion-header {
+            display:flex; align-items:baseline; justify-content:space-between; gap:40px;
+            padding:20px 0; cursor:pointer; user-select:none;
+        }
+
+        .accordion-name {
+            font-family:var(--black-font); font-size:clamp(32px,5vw,64px); font-weight:400;
+            line-height:1.1; letter-spacing:-0.02em; transition:opacity 0.3s ease;
+        }
+
+        .accordion-right { display:flex; align-items:center; gap:24px; flex-shrink:0; }
+        .accordion-tags { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+        .tag { font-size:10px; letter-spacing:0.05em; border:1px solid rgba(0,0,0,0.22); padding:3px 9px; border-radius:20px; opacity:0.5; }
+
+        .accordion-arrow {
+            font-size:22px; font-weight:300; opacity:0.3;
+            transition:transform 0.35s ease, opacity 0.2s ease; line-height:1; flex-shrink:0;
+        }
+        .accordion-item.open .accordion-arrow { transform:rotate(45deg); opacity:0.7; }
+
+        /* dim others on hover */
+        .project-list:has(.accordion-header:hover) .accordion-item:not(:hover) .accordion-name { opacity:0.2; }
+
+        /* ── PANEL ── */
+        .accordion-panel {
+            display:grid; grid-template-rows:0fr;
+            transition:grid-template-rows 0.45s cubic-bezier(0.4,0,0.2,1);
+        }
+        .accordion-item.open .accordion-panel { grid-template-rows:1fr; }
+        .accordion-panel-inner { overflow:hidden; }
+
+        .accordion-content {
+            padding:8px 0 48px;
+            font-size:14.5px; line-height:1.85; color:var(--black);
+            max-width:640px;
+        }
+        .accordion-content p { opacity:0.85; }
+        .subsection { margin-top:32px; }
+        .subsection-label { font-size:10.5px; letter-spacing:0.12em; opacity:0.4; margin-bottom:10px; display:block; }
+        .photo-gallery video { height:275px; width:auto; display:block; }
+        .accordion-content p { margin-bottom:14px; }
+        .accordion-content p:last-child { margin-bottom:0; }
+
+        .photo-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; }
+        .photo-row img { height:200px; width:auto; object-fit:cover; display:block; }
+
+        /* ── PHOTO GALLERY ── */
+        .photo-gallery {
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            margin-top:24px;
+        }
+        .photo-gallery img {
+            height:275px;
+            width:auto;
+            object-fit:cover;
+            display:block;
+        }
+
+        /* ── BOOK ── */
+        .book-wrap { margin-top:28px; display:flex; flex-direction:column; align-items:flex-start; gap:14px; }
+        .book-outer { perspective:2200px; width:100%; }
+        .book {
+            display:flex; width:67.5%; aspect-ratio:1368/952;
+            position:relative;
+            box-shadow:0 10px 48px rgba(0,0,0,0.13);
+            transform-style:preserve-3d;
+        }
+        .book-left, .book-right {
+            width:50%; height:100%;
+            background:#f5f0e6;
+            overflow:hidden; position:relative;
+        }
+        .book-left { box-shadow:inset -5px 0 10px rgba(0,0,0,0.07); }
+        .book-right { box-shadow:inset 3px 0 8px rgba(0,0,0,0.04); }
+        .book::after {
+            content:''; position:absolute; left:calc(50% - 1px); top:0;
+            width:2px; height:100%;
+            background:linear-gradient(to right,rgba(0,0,0,0.1),rgba(0,0,0,0.02));
+            pointer-events:none; z-index:20;
+        }
+        .page-turner {
+            position:absolute; width:50%; height:100%;
+            transform-style:preserve-3d; z-index:15;
+        }
+        .turner-front, .turner-back {
+            position:absolute; inset:0;
+            backface-visibility:hidden;
+            background:#f5f0e6; overflow:hidden;
+        }
+        .turner-back { transform:rotateY(180deg); }
+        .page-content { padding:28px; width:100%; height:100%; overflow:hidden; box-sizing:border-box; }
+        .page-title-spread { display:flex; align-items:center; justify-content:center; height:100%; }
+        .page-title-spread span { font-family:var(--serif); font-style:italic; font-size:24px; opacity:0.45; letter-spacing:0.02em; }
+        .spread-half { width:100%; height:100%; background-size:200% 100%; background-repeat:no-repeat; }
+        .spread-half.left-half { background-position:0% center; }
+        .spread-half.right-half { background-position:100% center; }
+        .book-controls { display:flex; align-items:center; gap:14px; }
+        .book-btn {
+            background:none; border:1px solid rgba(0,0,0,0.18);
+            width:30px; height:30px; border-radius:50%; cursor:pointer;
+            font-size:16px; display:flex; align-items:center; justify-content:center;
+            transition:border-color 0.2s ease; font-family:var(--sans); line-height:1;
+        }
+        .book-btn:hover:not([disabled]) { border-color:var(--black); }
+        .book-btn[disabled] { opacity:0.2; cursor:default; pointer-events:none; }
+        .book-spread-num { font-size:10px; letter-spacing:0.1em; opacity:0.35; }
+
+        /* ── FOOTER ── */
+        .site-footer { position:relative; z-index:10; background:var(--navy); color:rgba(255,255,255,0.55); font-size:12px; letter-spacing:0.08em; text-transform:lowercase; padding:20px 60px; display:flex; align-items:center; justify-content:space-between; }
+        .footer-icons { display:flex; gap:16px; align-items:center; }
+        .footer-icons a { color:rgba(255,255,255,0.55); transition:color 0.2s ease; display:flex; }
+        .footer-icons a:hover { color:rgba(255,255,255,1); }
+    </style>
+</head>
+<body>
+
+    <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="menu"><span></span><span></span><span></span></button>
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+    <nav class="nav-menu" id="navMenu">
+        <a href="scrollprojects.html">selected projects</a>
+        <a href="branding.html">branding</a>
+        <a href="printpublications.html">print publications</a>
+        <a href="personal.html" class="active">personal</a>
+        <a href="about.html">about me</a>
+    </nav>
+    <header class="site-header"><a href="index.html"><h1>Christine Z</h1></a></header>
+
+    <div class="project-list">
+
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-name">film photography</span>
+                <div class="accordion-right">
+                    <span class="accordion-arrow">+</span>
+                </div>
+            </div>
+            <div class="accordion-panel">
+                <div class="accordion-panel-inner">
+                    <div class="accordion-content" style="max-width:none;">
+                        <p>a hobby since high school. follow <a href="https://www.instagram.com/onebigfatdump" target="_blank">@onebigfatdump</a> for more.</p>
+                        <div class="photo-gallery">
+                            <img src="images/film/film photography.webp" alt="">
+                            <img src="images/film/picnic.webp" alt="">
+                            <img src="images/film/IMG_7548.PNG.png" alt="">
+                            <img src="images/film/Hawaii4.jpg" alt="">
+                            <img src="images/film/R1-06921-0017.JPG.jpg" alt="">
+                            <img src="images/film/R1-06922-0021.jpg" alt="">
+                            <img src="images/film/Hawaii3.jpg" alt="">
+                            <img src="images/film/R1-01527-0020.JPG.jpg" alt="">
+                            <img src="images/film/R1-06922-0011.JPG.jpg" alt="">
+                            <img src="images/film/R1-01525-0008.jpg" alt="">
+                            <img src="images/film/000002810030.jpg.png" alt="">
+                            <img src="images/film/IMG_7549.PNG.png" alt="">
+                            <img src="images/film/IMG_7547.PNG.png" alt="">
+                            <img src="images/film/000077760001.JPG.jpg" alt="">
+                            <img src="images/film/000002780017.jpg" alt="">
+                            <img src="images/film/R1-06927-0007.JPG.jpg" alt="">
+                            <img src="images/film/Hawaii8.jpg" alt="">
+                            <img src="images/film/000013610021.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-name">pottery</span>
+                <div class="accordion-right">
+                    <span class="accordion-arrow">+</span>
+                </div>
+            </div>
+            <div class="accordion-panel">
+                <div class="accordion-panel-inner">
+                    <div class="accordion-content" style="max-width:none;">
+                        <p>something about being an earth sign... i've loved ceramics since as long as i can remember. follow <a href="https://www.instagram.com/onebigfatlump" target="_blank">@onebigfatlump</a> for more.</p>
+                        <div class="photo-gallery">
+                            <img src="images/pottery/IMG_2487.jpg" alt="">
+                            <img src="images/pottery/IMG_5323.jpg" alt="">
+                            <img src="images/pottery/IMG_5482.jpg" alt="">
+                            <img src="images/pottery/IMG_6829.jpg" alt="">
+                            <img src="images/pottery/IMG_8275.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-name">scrapbooking</span>
+                <div class="accordion-right">
+                    <span class="accordion-arrow">+</span>
+                </div>
+            </div>
+            <div class="accordion-panel">
+                <div class="accordion-panel-inner">
+                    <div class="accordion-content" style="max-width:none;">
+                        <p>"you want that for your junk journal?" the most common thing i hear while traveling, circa 2022. and the answer is always yes.</p>
+                        <div class="book-wrap">
+                            <div class="book-outer">
+                                <div class="book" id="scrapbook">
+                                    <div class="book-left" id="scrapLeft"></div>
+                                    <div class="book-right" id="scrapRight"></div>
+                                    <div class="page-turner" id="scrapTurner">
+                                        <div class="turner-front" id="scrapTurnerFront"></div>
+                                        <div class="turner-back" id="scrapTurnerBack"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-controls">
+                                <button class="book-btn" id="scrapPrev" onclick="scrapPrev()">‹</button>
+                                <span class="book-spread-num" id="scrapNum"></span>
+                                <button class="book-btn" id="scrapNext" onclick="scrapNext()">›</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-name">@ d. school</span>
+                <div class="accordion-right">
+                    <span class="accordion-arrow">+</span>
+                </div>
+            </div>
+            <div class="accordion-panel">
+                <div class="accordion-panel-inner">
+                    <div class="accordion-content" style="max-width:none;">
+                        <p>miscellaneous work through classes or personal projects.</p>
+                        <div class="subsection">
+                            <span class="subsection-label">design 11: automata</span>
+                            <p>a fully hand-crafted, self-run texas-themed automata machine constructed with colored paper and foam boards.</p>
+                            <div class="photo-gallery">
+                                <img src="images/d. school/IMG_7732.jpg" alt="">
+                                <img src="images/d. school/IMG_7772.jpg" alt="">
+                                <img src="images/d. school/IMG_7776 2.jpg" alt="">
+                                <img src="images/d. school/IMG_7778 2.jpg" alt="">
+                                <video src="images/d. school/IMG_7770.mov" controls muted playsinline></video>
+                            </div>
+                        </div>
+                        <div class="subsection">
+                            <span class="subsection-label">gse makery: stanford photobooth</span>
+                            <p>helped with UI/UX and photo strip designs for a student-initiated photobooth on campus, built completely from scratch.</p>
+                            <div class="photo-gallery">
+                                <img src="images/d. school/photobooth 1.JPG" alt="">
+                                <img src="images/d. school/photobooth 2.JPG" alt="">
+                                <img src="images/d. school/photobooth 3.JPG" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="site-footer">Christine Zhao © 2026
+        <div class="footer-icons">
+            <a href="mailto:chrzhao@stanford.edu" title="email" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/christine-zhao/" title="linkedin" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://docs.google.com/document/d/e/2PACX-1vTQKU-YS7dxEbHs5rHO5EJvOMKOC45Jk4Fn0W0msWTnugqCCU1Mi_VJdQi4lpZCD8KsX2klMEfvL2FV/pub" title="resume" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // ── SCRAPBOOK ──
+        function sl(img) { return `<div class="spread-half left-half" style="background-image:url('${img}')"></div>`; }
+        function sr(img) { return `<div class="spread-half right-half" style="background-image:url('${img}')"></div>`; }
+        const scrapSpreads = [
+            { left: sl('images/scrapbook/sb1.png'),  right: sr('images/scrapbook/sb1.png')  },
+            { left: sl('images/scrapbook/sb2.png'),  right: sr('images/scrapbook/sb2.png')  },
+            { left: sl('images/scrapbook/sb3.png'),  right: sr('images/scrapbook/sb3.png')  },
+            { left: sl('images/scrapbook/sb4.png'),  right: sr('images/scrapbook/sb4.png')  },
+            { left: sl('images/scrapbook/sb5.png'),  right: sr('images/scrapbook/sb5.png')  },
+            { left: sl('images/scrapbook/sb6.png'),  right: sr('images/scrapbook/sb6.png')  },
+            { left: sl('images/scrapbook/sb7.png'),  right: sr('images/scrapbook/sb7.png')  },
+            { left: sl('images/scrapbook/sb8.png'),  right: sr('images/scrapbook/sb8.png')  },
+            { left: sl('images/scrapbook/sb9.png'),  right: sr('images/scrapbook/sb9.png')  },
+            { left: sl('images/scrapbook/sb10.png'), right: sr('images/scrapbook/sb10.png') },
+            { left: sl('images/scrapbook/sb11.png'), right: sr('images/scrapbook/sb11.png') },
+        ];
+        let scrapCurrent = 0, scrapAnimating = false;
+        const scrapLeft = document.getElementById('scrapLeft');
+        const scrapRight = document.getElementById('scrapRight');
+        const scrapTurner = document.getElementById('scrapTurner');
+        const scrapFront = document.getElementById('scrapTurnerFront');
+        const scrapBack = document.getElementById('scrapTurnerBack');
+
+        function scrapRender() {
+            scrapLeft.innerHTML = scrapSpreads[scrapCurrent].left;
+            scrapFront.innerHTML = scrapSpreads[scrapCurrent].right;
+            scrapRight.innerHTML = '';
+            scrapBack.innerHTML = '';
+            scrapTurner.style.cssText = 'left:50%;right:auto;transform-origin:left center;transform:rotateY(0deg);transition:none;';
+            updateScrapNav();
+        }
+
+        function scrapNext() {
+            if (scrapAnimating || scrapCurrent >= scrapSpreads.length - 1) return;
+            scrapAnimating = true;
+            const next = scrapCurrent + 1;
+            scrapTurner.style.cssText = 'left:50%;right:auto;transform-origin:left center;transform:rotateY(0deg);transition:none;';
+            scrapFront.innerHTML = scrapSpreads[scrapCurrent].right;
+            scrapBack.innerHTML = scrapSpreads[next].left;
+            scrapRight.innerHTML = scrapSpreads[next].right;
+            scrapTurner.getBoundingClientRect();
+            scrapTurner.style.transition = 'transform 0.72s cubic-bezier(0.645,0.045,0.355,1)';
+            scrapTurner.style.transform = 'rotateY(-180deg)';
+            setTimeout(() => {
+                scrapCurrent = next;
+                scrapLeft.innerHTML = scrapSpreads[scrapCurrent].left;
+                scrapTurner.style.cssText = 'left:50%;right:auto;transform-origin:left center;transform:rotateY(0deg);transition:none;';
+                scrapFront.innerHTML = scrapSpreads[scrapCurrent].right;
+                scrapBack.innerHTML = '';
+                scrapRight.innerHTML = '';
+                scrapAnimating = false;
+                updateScrapNav();
+            }, 730);
+        }
+
+        function scrapPrev() {
+            if (scrapAnimating || scrapCurrent <= 0) return;
+            scrapAnimating = true;
+            const prev = scrapCurrent - 1;
+            scrapTurner.style.cssText = 'left:0;right:auto;transform-origin:right center;transform:rotateY(0deg);transition:none;';
+            scrapFront.innerHTML = scrapSpreads[scrapCurrent].left;
+            scrapBack.innerHTML = scrapSpreads[prev].right;
+            scrapLeft.innerHTML = scrapSpreads[prev].left;
+            scrapRight.innerHTML = '';
+            scrapTurner.getBoundingClientRect();
+            scrapTurner.style.transition = 'transform 0.72s cubic-bezier(0.645,0.045,0.355,1)';
+            scrapTurner.style.transform = 'rotateY(180deg)';
+            setTimeout(() => {
+                scrapCurrent = prev;
+                scrapRight.innerHTML = scrapSpreads[scrapCurrent].right;
+                scrapTurner.style.cssText = 'left:50%;right:auto;transform-origin:left center;transform:rotateY(0deg);transition:none;';
+                scrapFront.innerHTML = scrapSpreads[scrapCurrent].right;
+                scrapBack.innerHTML = '';
+                scrapAnimating = false;
+                updateScrapNav();
+            }, 730);
+        }
+
+        function updateScrapNav() {
+            document.getElementById('scrapPrev').disabled = scrapCurrent <= 0;
+            document.getElementById('scrapNext').disabled = scrapCurrent >= scrapSpreads.length - 1;
+            document.getElementById('scrapNum').textContent = `${scrapCurrent + 1} / ${scrapSpreads.length}`;
+        }
+        scrapRender();
+
+function toggleAccordion(header) {
+            const item = header.parentElement;
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.accordion-item.open').forEach(el => el.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        }
+        function toggleNav(){const open=document.getElementById('navMenu').classList.toggle('open');document.getElementById('navToggle').classList.toggle('open',open);document.getElementById('navOverlay').classList.toggle('visible',open);}
+        function closeNav(){document.getElementById('navMenu').classList.remove('open');document.getElementById('navToggle').classList.remove('open');document.getElementById('navOverlay').classList.remove('visible');}
+    </script>
+</body>
+</html>

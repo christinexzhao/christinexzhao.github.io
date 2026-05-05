@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphic Design — Christine Zhao</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    
+    <!-- Left Nav Bar -->
+    <aside class="nav-bar">
+        <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-wordmark">Christine Zhao</div>
+    </aside>
+
+    <!-- Overlay -->
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+
+    <nav class="nav-folders" id="navFolders">
+        <a href="index.html" class="folder-tab tab-home">
+            <span class="tab-title">Home</span>
+        </a>
+        <a href="projects.html" class="folder-tab tab-projects">
+            <span class="tab-title">Projects</span>
+        </a>
+        <a href="graphic-design.html" class="folder-tab tab-graphic active">
+            <span class="tab-title">Graphic Design</span>
+        </a>
+        <a href="print.html" class="folder-tab tab-print">
+            <span class="tab-title">Print</span>
+        </a>
+        <a href="personal.html" class="folder-tab tab-photo">
+            <span class="tab-title">Photography</span>
+        </a>
+        <a href="dschool.html" class="folder-tab tab-dschool">
+            <span class="tab-title">d.school</span>
+        </a>
+    </nav>
+
+    <main class="main-content">
+
+        <div class="page-header">
+            <div class="page-eyebrow">Code_003 // Visual Identity</div>
+            <h1 class="page-title">Graphic<br><em>Design</em></h1>
+            <p class="page-desc">Visual identity, illustration, and graphic work.</p>
+        </div>
+
+        <div class="section-header">
+            <span class="label">All Work</span>
+            <span class="rule"></span>
+        </div>
+
+        <div class="placeholder-grid">
+            <div class="placeholder-block">
+                <span>[ image ]</span>
+                <span class="ph-label">project 01</span>
+            </div>
+            <div class="placeholder-block">
+                <span>[ image ]</span>
+                <span class="ph-label">project 02</span>
+            </div>
+            <div class="placeholder-block">
+                <span>[ image ]</span>
+                <span class="ph-label">project 03</span>
+            </div>
+            <div class="placeholder-block">
+                <span>[ image ]</span>
+                <span class="ph-label">project 04</span>
+            </div>
+            <div class="placeholder-block">
+                <span>[ image ]</span>
+                <span class="ph-label">project 05</span>
+            </div>
+            <div class="placeholder-block">
+                <span>[ image ]</span>
+                <span class="ph-label">project 06</span>
+            </div>
+        </div>
+
+    </main>
+
+        <script>
+        function toggleNav() {
+            const isOpen = document.getElementById('navFolders').classList.toggle('open');
+            document.getElementById('navToggle').classList.toggle('active');
+            document.getElementById('navOverlay').classList.toggle('visible', isOpen);
+        }
+        function closeNav() {
+            document.getElementById('navFolders').classList.remove('open');
+            document.getElementById('navToggle').classList.remove('active');
+            document.getElementById('navOverlay').classList.remove('visible');
+        }
+    </script>
+
+</body>
+</html>
