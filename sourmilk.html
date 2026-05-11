@@ -6,51 +6,128 @@
     <title>Christine Z — Sourmilk</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root { --white:#FAFAF8; --navy:#1E2840; --black:#1A1A1A; --gray:#666; --sans:'Archivo',system-ui,sans-serif; --black-font:'Archivo Black',system-ui,sans-serif; --serif:'Playfair Display',Georgia,serif; }
+        :root { --white:#FAFAF8; --navy:#1E2840; --black:#1A1A1A; --gray:#666; --sans:'Archivo',system-ui,sans-serif; --black-font:'Archivo Black',system-ui,sans-serif; --serif:'Cormorant Garamond',Georgia,serif; }
         body { background:var(--white); color:var(--black); font-family:var(--sans); text-transform:lowercase; min-height:100vh; display:flex; flex-direction:column; }
         .site-header { position:fixed; top:0; right:0; padding:20px 32px; z-index:100; }
         .site-header h1 { font-family:var(--black-font); font-size:18px; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; }
         .site-header a { text-decoration:none; color:inherit; }
         .nav-toggle { position:fixed; top:20px; left:28px; z-index:200; background:none; border:none; cursor:pointer; display:flex; flex-direction:column; gap:5px; padding:4px; }
-        .nav-toggle span { display:block; width:24px; height:1.5px; background:var(--black); transition:transform 0.3s ease,opacity 0.3s ease; }
+        .nav-toggle span { display:block; width:24px; height:1.5px; background:var(--black); transition:transform 0.3s ease,opacity 0.3s ease,background 0.3s ease; }
         .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);} .nav-toggle.open span:nth-child(2){opacity:0;} .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
         .nav-menu { position:fixed; top:0; left:0; width:260px; height:100vh; background:var(--white); border-right:1px solid rgba(0,0,0,0.1); z-index:150; display:flex; flex-direction:column; justify-content:center; padding:60px 40px; transform:translateX(-100%); transition:transform 0.38s cubic-bezier(0.4,0,0.2,1); }
         .nav-menu.open{transform:translateX(0);} .nav-menu a{font-family:var(--black-font);font-size:20px;font-weight:400;letter-spacing:0.02em;text-transform:lowercase;color:var(--black);text-decoration:none;margin-bottom:28px;opacity:0.4;transition:opacity 0.2s ease;} .nav-menu a:hover,.nav-menu a.active{opacity:1;} .nav-menu a:last-child{position:absolute;bottom:60px;}
-        .nav-overlay{position:fixed;inset:0;z-index:140;display:none;} .nav-overlay.visible{display:block;}
+        .nav-overlay{position:fixed;inset:0;z-index:140;display:none;} .nav-overlay.visible{display:block;} .hero-visible .nav-toggle span{background:#fff;} .hero-visible .site-header h1{color:#fff;}
         .hero{width:100%;height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0d0d0d;}
         .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
         .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.6) 100%);}
         .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1;transition:opacity 0.1s linear;pointer-events:none;}
         .hero-meta{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:0 40px;}
         .hero-left h2{font-family:var(--black-font);font-size:clamp(40px,6vw,80px);font-weight:400;color:#fff;line-height:1;letter-spacing:-0.02em;}
-        .hero-tagline{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2vw,20px);color:rgba(255,255,255,0.75);margin-top:12px;line-height:1.4;}
+        .hero-tagline{font-family:var(--serif);font-size:clamp(18px,2.5vw,26px);color:rgba(255,255,255,0.75);margin-top:12px;line-height:1.4;}
         .hero-right{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:8px;}
-        .hero-role{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;}
+        .hero-role{font-size:17px;color:rgba(255,255,255,0.55);line-height:1.6;}
         .hero-tags{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
         .tag{font-size:10.5px;letter-spacing:0.05em;border:1px solid rgba(255,255,255,0.45);padding:3px 10px;border-radius:20px;color:rgba(255,255,255,0.8);}
         .scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;font-size:11px;letter-spacing:0.1em;color:rgba(255,255,255,0.4);display:flex;flex-direction:column;align-items:center;gap:6px;}
-        .scroll-hint::after{content:'';display:block;width:1px;height:32px;background:rgba(255,255,255,0.3);}
-        main{flex:1;} .case-study{max-width:760px;margin:0 auto;padding:80px 40px 100px;}
-        .section{margin-bottom:72px;} .section-label{font-size:10.5px;letter-spacing:0.14em;opacity:0.35;margin-bottom:16px;display:block;}
+        .scroll-hint::after{content:'';display:block;width:1px;height:32px;background:rgba(255,255,255,0.3);} .hero-divider{width:40px;height:1px;background:rgba(255,255,255,0.3);margin:4px 0;}
+        main{flex:1;}
+        .case-study{display:grid;grid-template-columns:200px 1fr;max-width:1000px;margin:0 auto;padding:80px 40px 100px;gap:0 60px;align-items:start;}
+        .back-link-row{grid-column:1/-1;margin-bottom:24px;}
+        .sidebar{position:sticky;top:40px;grid-column:1;}
+        .sidebar-label{font-family:var(--serif);font-size:28px;letter-spacing:0.01em;opacity:0;transition:opacity 0.4s ease;line-height:1.5;display:block;position:absolute;border-top:1px solid rgba(0,0,0,0.1);padding-top:20px;}
+        .sidebar-label.active{opacity:0.7;position:relative;}
+        .content-col{grid-column:2;}
+        .chapter{padding-bottom:80px;border-top:1px solid rgba(0,0,0,0.1);padding-top:20px;}
+        .section{margin-bottom:56px;}
+        .chapter .section:last-child{margin-bottom:0;}
         .section h3{font-family:var(--black-font);font-size:26px;font-weight:400;margin-bottom:20px;line-height:1.2;}
         .section p{font-size:15px;line-height:1.85;color:var(--black);margin-bottom:16px;opacity:0.85;}
-        .divider{width:100%;height:1px;background:rgba(0,0,0,0.1);margin-bottom:72px;}
-        .back-link{display:inline-block;font-size:12px;letter-spacing:0.05em;color:var(--gray);text-decoration:none;border-bottom:1px solid currentColor;margin-bottom:56px;transition:color 0.2s ease;} .back-link:hover{color:var(--black);}
+        .back-link{display:inline-block;font-size:12px;letter-spacing:0.05em;color:var(--gray);text-decoration:none;border-bottom:1px solid currentColor;transition:color 0.2s ease;} .back-link:hover{color:var(--black);}
+        em{font-family:var(--serif);font-style:italic;}
         .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:40px 0 72px;}
         .photo-grid img,.placeholder-block{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#E8E4DC;}
-        .transition-overlay{position:fixed;inset:0;background:var(--navy);z-index:9999;pointer-events:none;transform:translateY(100%);transition:transform 0.55s cubic-bezier(0.76,0,0.24,1);}
-        .transition-overlay.slide-in-up{transform:translateY(0);} .transition-overlay.slide-in-down{transform:translateY(0);transition:none;} .transition-overlay.slide-out-up{transform:translateY(-100%);} .transition-overlay.slide-out-down{transform:translateY(100%);}
-        .site-footer{background:var(--navy);color:rgba(255,255,255,0.55);font-size:12px;font-family:var(--sans);letter-spacing:0.08em;text-transform:lowercase;padding:20px 60px;}
+        .content-tag{display:inline-block;font-size:10px;letter-spacing:0.05em;border:1px solid rgba(0,0,0,0.22);padding:3px 9px;border-radius:20px;opacity:0.5;margin-bottom:14px;margin-right:6px;}
+        .site-footer{background:var(--navy);color:rgba(255,255,255,0.55);font-size:12px;font-family:'Nanum Myeongjo', Georgia, serif;letter-spacing:0.08em;text-transform:lowercase;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;}
             .footer-icons { display: flex; gap: 16px; align-items: center; }
         .footer-icons a { color: rgba(255,255,255,0.55); transition: color 0.2s ease; display: flex; }
         .footer-icons a:hover { color: rgba(255,255,255,1); }
+        @view-transition { navigation: auto; }
+        /* ── BACK PANEL (fixed behind main content, revealed at scroll end) ── */
+        /* ── BACK PANEL ── */
+        .bp-bg{position:fixed;inset:0;z-index:0;opacity:0;transition:opacity 0.5s ease;pointer-events:none;}
+        .bp-bg::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.45);}
+        .bp-bg img{width:100%;height:100%;object-fit:cover;display:block;}
+        .bp-bg.visible{opacity:1;}
+        .back-panel{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;}
+        .bp-main{flex:1;display:flex;align-items:flex-start;padding:140px 80px 80px;position:relative;}
+        .bp-list{width:100%;}
+        .bp-item{display:flex;align-items:baseline;justify-content:space-between;gap:40px;padding:20px 0;border-top:1px solid rgba(0,0,0,0.12);text-decoration:none;color:var(--black);transition:color 0.4s ease,border-color 0.4s ease;}
+        .bp-item:last-child{border-bottom:1px solid rgba(0,0,0,0.12);}
+        .bp-name{font-family:var(--black-font);font-size:clamp(32px,5vw,64px);font-weight:400;line-height:1.1;letter-spacing:-0.02em;transition:opacity 0.3s ease;}
+        .bp-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0;}
+        .bp-tag{font-size:10px;letter-spacing:0.05em;border:1px solid rgba(0,0,0,0.22);padding:3px 9px;border-radius:20px;opacity:0.5;transition:border-color 0.4s ease;}
+        .bp-list:has(.bp-item:hover) .bp-item:not(:hover) .bp-name{opacity:0.2;}
+        .back-panel.hovering .bp-item{color:#fff;border-top-color:rgba(255,255,255,0.25);}
+        .back-panel.hovering .bp-item:last-child{border-bottom-color:rgba(255,255,255,0.25);}
+        .back-panel.hovering .bp-tag{border-color:rgba(255,255,255,0.4);}
+        .back-panel .site-footer{position:relative;display:flex;flex-direction:row;align-items:center;justify-content:space-between;}
+        /* ── PAGE WRAPPER ── */
+        .page-wrapper{position:relative;z-index:2;background:var(--white);}
+        .page-wrapper .site-footer{display:none;}
+        /* ── REVEAL SPACER ── */
+        .reveal-spacer{position:relative;z-index:2;height:100vh;pointer-events:none;}
     </style>
 </head>
 <body>
-    <div class="transition-overlay" id="transitionOverlay"></div>
+    <div class="bp-bg" id="bpbg-oncall"><img src="images/on%20call/oncall.JPG" alt=""></div>
+    <div class="bp-bg" id="bpbg-alegio"><img src="images/alegio/alegio.jpg" alt=""></div>
+    <div class="bp-bg" id="bpbg-log"><img src="images/log/logmocknew.png" alt=""></div>
+    <div class="bp-bg" id="bpbg-beli"><img src="images/beli/belimock.png" alt=""></div>
+    <div class="bp-bg" id="bpbg-sourmilk"><img src="images/sourmilk/grocerystore.JPG" alt=""></div>
+    <div class="back-panel">
+        <div class="bp-main">
+            <div class="bp-list">
+                <a href="oncallcafe.html" class="bp-item" data-bg="bpbg-oncall">
+                    <span class="bp-name">on call café</span>
+                    <div class="bp-tags"><span class="bp-tag">product management</span><span class="bp-tag">social media</span><span class="bp-tag">physical design</span><span class="bp-tag">event planning</span><span class="bp-tag">product marketing</span></div>
+                </a>
+                <a href="alegiochocolate.html" class="bp-item" data-bg="bpbg-alegio">
+                    <span class="bp-name">alegio chocolate</span>
+                    <div class="bp-tags"><span class="bp-tag">product marketing</span><span class="bp-tag">branding</span><span class="bp-tag">merch</span><span class="bp-tag">consumer research</span></div>
+                </a>
+                <a href="logapp.html" class="bp-item" data-bg="bpbg-log">
+                    <span class="bp-name">log app</span>
+                    <div class="bp-tags"><span class="bp-tag">ui/ux</span><span class="bp-tag">social media</span><span class="bp-tag">merch</span></div>
+                </a>
+                <a href="beliapp.html" class="bp-item" data-bg="bpbg-beli">
+                    <span class="bp-name">beli app</span>
+                    <div class="bp-tags"><span class="bp-tag">ui/ux</span><span class="bp-tag">user research</span></div>
+                </a>
+                <a href="sourmilk.html" class="bp-item" data-bg="bpbg-sourmilk">
+                    <span class="bp-name">sourmilk</span>
+                    <div class="bp-tags"><span class="bp-tag">seo</span><span class="bp-tag">branding</span></div>
+                </a>
+            </div>
+        </div>
+        <footer class="site-footer">
+            Christine Zhao © 2026
+            <div class="footer-icons">
+                <a href="mailto:chrzhao@stanford.edu" title="email" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/christine-zhao/" title="linkedin" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://docs.google.com/document/d/e/2PACX-1vTQKU-YS7dxEbHs5rHO5EJvOMKOC45Jk4Fn0W0msWTnugqCCU1Mi_VJdQi4lpZCD8KsX2klMEfvL2FV/pub" title="resume" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                </a>
+            </div>
+        </footer>
+    </div>
+    <div class="page-wrapper">
     <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="menu"><span></span><span></span><span></span></button>
     <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
     <nav class="nav-menu" id="navMenu">
@@ -60,44 +137,58 @@
     <header class="site-header"><a href="index.html"><h1>Christine Z</h1></a></header>
 
     <div class="hero">
-        <img src="images/sourmilk/sourmilkaisle.jpg" alt="" class="hero-bg">
+        <img src="images/sourmilk/grocerystore.JPG" alt="" class="hero-bg">
         <div class="hero-overlay" id="heroOverlay"></div>
         <div class="hero-meta">
             <div class="hero-left">
                 <h2>sourmilk</h2>
-                <p class="hero-tagline">[ tagline ]</p>
+                <p class="hero-tagline">gut-healthy greek yogurt based in nyc</p>
             </div>
+            <div class="hero-divider"></div>
             <div class="hero-right">
-                <p class="hero-role">[ role ] &nbsp;·&nbsp; [ duration ]</p>
+                <p class="hero-role">seo growth intern &nbsp;·&nbsp; march 2026 – now</p>
                 <div class="hero-tags">
-                    <span class="tag">UI/UX</span><span class="tag">branding</span><span class="tag">SEO</span>
+                    <span class="tag">seo</span><span class="tag">branding</span>
                 </div>
             </div>
         </div>
         <div class="scroll-hint">scroll</div>
     </div>
 
-    <main><div class="case-study">
-        <a href="scrollprojects.html" class="back-link">← back to projects</a>
-        <div class="divider"></div>
-        <div class="section">
-            <span class="section-label">01 — what is sourmilk</span>
-            <h3>[ heading ]</h3>
-            <p>[ description ]</p>
+    <main>
+        <div class="case-study">
+            <div class="back-link-row">
+                <a href="scrollprojects.html" class="back-link">← back to projects</a>
+            </div>
+            <div class="sidebar">
+
+                <span class="sidebar-label active" id="label-1">what is sourmilk</span>
+                <span class="sidebar-label" id="label-2">what i do</span>
+            </div>
+            <div class="content-col">
+
+                <div class="chapter" data-chapter="1">
+                    <div class="section">
+                        <h3>healing america's gut, one spoonful at a time.</h3>
+                        <p>sourmilk is a probiotic greek yogurt brand founded by elan halpern and kiki couchman. unlike traditional yogurts, sourmilk is formulated as a probiotic supplement in food form—using clinically-studied strains such as l. reuteri to deliver real gut health impact.</p>
+                        <p>sourmilk builds in public, utilizing a customer-first approach to build brand loyalty before the product even hits grocery shelves. currently based in new york city, soon to expand across the country.</p>
+                        <img src="images/sourmilk/me.JPG" alt="" style="width:100%;display:block;margin-top:20px;">
+                    </div>
+                </div>
+                <div class="chapter" data-chapter="2">
+                    <div class="section">
+                        <span class="content-tag">seo</span><span class="content-tag">branding</span>
+                        <h3>getting sourmilk found.</h3>
+                        <p>as an seo growth intern, i work with ahrefs and google search console to identify high-opportunity keywords across the yogurt and probiotic supplement space, then build keyword indexes, optimize website metadata, and create content designed to rank.</p>
+                        <p>by conducting seo audits and targeted improvements across the site, i increased product and store list search visibility by 163%. i also built a keyword-driven content plan aimed at growing organic traffic, product discovery, and email signups with a particular focus on recipe-related content and backlink outreach as high-leverage opportunities.</p>
+                        <div style="margin-top:20px;width:100%;aspect-ratio:960/569;overflow:hidden;">
+                            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQVdjKeUnPqcgGs9D1CU5A_OrZ1nB75vY9ODbHTmzAKDVlLSLuOgNaiYShaIng6ZX5dkjb2a872hafz/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="100%" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="divider"></div>
-        <div class="section">
-            <span class="section-label">02 — what i did</span>
-            <h3>[ heading ]</h3>
-            <p>[ description ]</p>
-        </div>
-        <div class="divider"></div>
-        <div class="section">
-            <span class="section-label">03 — what i've learned</span>
-            <h3>[ heading ]</h3>
-            <p>[ description ]</p>
-        </div>
-    </div></main>
+    </main>
 
     <footer class="site-footer">Christine Zhao © 2026
         <div class="footer-icons">
@@ -113,41 +204,47 @@
         </div>
     </footer>
     <script>
-        const overlay = document.getElementById('transitionOverlay');
-        if (new URLSearchParams(window.location.search).get('enter')) {
-            overlay.classList.add('slide-in-up');
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
-                overlay.classList.remove('slide-in-up'); overlay.classList.add('slide-out-up');
-            }));
-        }
-        if (new URLSearchParams(window.location.search).get('scrollbottom')) {
-            overlay.classList.add('slide-in-down');
-            document.documentElement.style.scrollBehavior = 'auto';
-            window.scrollTo(0, document.body.scrollHeight);
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
-                overlay.classList.remove('slide-in-down'); overlay.classList.add('slide-out-down');
-            }));
-        }
-        let navFired = false;
-        window.addEventListener('wheel', (e) => {
-            if (navFired) return;
-            if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 8 && e.deltaY > 0) {
-                navFired = true;
-                overlay.style.transition = 'none';
-                overlay.classList.remove('slide-in-up','slide-in-down','slide-out-up','slide-out-down');
-                overlay.getBoundingClientRect();
-                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
-                overlay.classList.add('slide-in-up');
-                setTimeout(() => { window.location.href = 'scrollprojects.html?from=sourmilk'; }, 580);
-            }
-        }, { passive: true });
-        window.addEventListener('scroll', () => {
-            document.getElementById('heroOverlay').style.opacity = 1 - Math.min(window.scrollY / (window.innerHeight * 0.5), 1);
+        function goTo(url) { window.location.href = url; }
+
+
+        // Back-panel background image hover
+        const backPanel = document.querySelector('.back-panel');
+        document.querySelectorAll('.bp-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                backPanel.classList.add('hovering');
+                const bg = document.getElementById(item.dataset.bg);
+                if (bg) bg.classList.add('visible');
+            });
+            item.addEventListener('mouseleave', () => {
+                backPanel.classList.remove('hovering');
+                const bg = document.getElementById(item.dataset.bg);
+                if (bg) bg.classList.remove('visible');
+            });
+            item.addEventListener('click', e => {
+                e.preventDefault();
+                goTo(item.getAttribute('href'));
+            });
         });
-        function toggleNav() { const open = document.getElementById('navMenu').classList.toggle('open'); document.getElementById('navToggle').classList.toggle('open', open); document.getElementById('navOverlay').classList.toggle('visible', open); }
-        function closeNav() { document.getElementById('navMenu').classList.remove('open'); document.getElementById('navToggle').classList.remove('open'); document.getElementById('navOverlay').classList.remove('visible'); }
+
+        // Scroll down at bottom → reveal back panel / go to scrollprojects
+        window.addEventListener('wheel', (e) => {
+            const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 10;
+            if (atBottom && e.deltaY > 0) goTo('scrollprojects.html?from=sourmilk');
+        }, { passive: true });
+
+
+        function toggleNav() {
+            const open = document.getElementById('navMenu').classList.toggle('open');
+            document.getElementById('navToggle').classList.toggle('open', open);
+            document.getElementById('navOverlay').classList.toggle('visible', open);
+        }
+        function closeNav() {
+            document.getElementById('navMenu').classList.remove('open');
+            document.getElementById('navToggle').classList.remove('open');
+            document.getElementById('navOverlay').classList.remove('visible');
+        }
     </script>
+    </div><!-- /.page-wrapper -->
+    <div class="reveal-spacer"></div>
 </body>
 </html>

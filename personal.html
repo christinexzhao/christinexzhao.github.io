@@ -6,7 +6,7 @@
     <title>Christine Z — Personal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;1,400&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root { --white:#FAFAF8; --navy:#1E2840; --black:#1A1A1A; --gray:#888; --sans:'Archivo',system-ui,sans-serif; --black-font:'Archivo Black',system-ui,sans-serif; --serif:'Playfair Display',Georgia,serif; }
@@ -121,7 +121,7 @@
         .turner-back { transform:rotateY(180deg); }
         .page-content { padding:28px; width:100%; height:100%; overflow:hidden; box-sizing:border-box; }
         .page-title-spread { display:flex; align-items:center; justify-content:center; height:100%; }
-        .page-title-spread span { font-family:var(--serif); font-style:italic; font-size:24px; opacity:0.45; letter-spacing:0.02em; }
+        .page-title-spread span { font-family:var(--serif); font-size:24px; opacity:0.45; letter-spacing:0.02em; }
         .spread-half { width:100%; height:100%; background-size:200% 100%; background-repeat:no-repeat; }
         .spread-half.left-half { background-position:0% center; }
         .spread-half.right-half { background-position:100% center; }
@@ -137,10 +137,11 @@
         .book-spread-num { font-size:10px; letter-spacing:0.1em; opacity:0.35; }
 
         /* ── FOOTER ── */
-        .site-footer { position:relative; z-index:10; background:var(--navy); color:rgba(255,255,255,0.55); font-size:12px; letter-spacing:0.08em; text-transform:lowercase; padding:20px 60px; display:flex; align-items:center; justify-content:space-between; }
+        .site-footer { position:relative; z-index:10; background:var(--navy); color:rgba(255,255,255,0.55); font-size:12px; font-family:'Nanum Myeongjo',Georgia,serif; letter-spacing:0.08em; text-transform:lowercase; padding:20px 60px; display:flex; align-items:center; justify-content:space-between; }
         .footer-icons { display:flex; gap:16px; align-items:center; }
         .footer-icons a { color:rgba(255,255,255,0.55); transition:color 0.2s ease; display:flex; }
         .footer-icons a:hover { color:rgba(255,255,255,1); }
+        @view-transition { navigation: auto; }
     </style>
 </head>
 <body>

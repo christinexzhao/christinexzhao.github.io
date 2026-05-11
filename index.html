@@ -6,7 +6,7 @@
     <title>Christine Z — About Me</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;1,400&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,9 +16,9 @@
             --navy:       #1E2840;
             --black:      #1A1A1A;
             --gray:       #666;
-            --sans:       'Archivo', system-ui, sans-serif;
+            --sans:       'Nanum Myeongjo', Georgia, serif;
             --black-font: 'Archivo Black', system-ui, sans-serif;
-            --serif:      'Playfair Display', Georgia, serif;
+            --serif:      'EB Garamond', Georgia, serif;
         }
 
         body {
@@ -125,7 +125,7 @@
 
         /* ── MAIN CONTENT ── */
         .content {
-            max-width: 660px;
+            max-width: 860px;
             margin: 0 auto;
             padding: 32px;
             display: flex;
@@ -133,12 +133,20 @@
             justify-content: center;
         }
 
+        .content-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
         /* ── PHOTO STACK ── */
         .photo-stack-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 64px;
+            flex-shrink: 0;
         }
 
         .binder-clip {
@@ -195,7 +203,6 @@
         .stack-tagline {
             margin-top: 28px;
             font-family: var(--serif);
-            font-style: italic;
             font-size: 13px;
             color: var(--gray);
             letter-spacing: 0.01em;
@@ -216,21 +223,79 @@
 
         .about-link {
             display: inline-block;
-            margin-top: 10px;
-            font-family: var(--sans);
-            font-size: 12px;
+            margin-top: 28px;
+            font-family: var(--serif);
+            font-size: 13px;
             color: var(--gray);
             text-decoration: none;
-            letter-spacing: 0.04em;
-            border-bottom: 1px solid currentColor;
-            transition: color 0.2s ease;
+            letter-spacing: 0.01em;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            transition: color 0.2s ease, border-color 0.2s ease;
         }
-        .about-link:hover { color: var(--black); }
+        .about-link:hover { color: var(--black); border-color: var(--black); }
 
         strong {
             font-family: var(--black-font);
             font-weight: 400;
         }
+
+        /* ── RESUME SUMMARY ── */
+        .resume-summary {
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+        }
+        .resume-tagline {
+            font-size: 15.5px;
+            line-height: 1.75;
+            color: var(--black);
+            opacity: 0.85;
+            margin-bottom: 28px;
+        }
+        .resume-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .resume-row {
+            display: grid;
+            grid-template-columns: 48px 140px 1fr;
+            align-items: baseline;
+            gap: 0 16px;
+            text-align: left;
+        }
+        .resume-year {
+            font-size: 13px;
+            color: var(--black);
+            opacity: 0.35;
+            letter-spacing: 0.04em;
+        }
+        .resume-org {
+            font-family: var(--black-font);
+            font-size: 15px;
+            font-weight: 400;
+        }
+        .resume-role {
+            font-size: 14.5px;
+            color: var(--black);
+            opacity: 0.45;
+        }
+
+        .resume-org a {
+            color: inherit;
+            text-decoration: none;
+            position: relative;
+        }
+        .resume-org a::after {
+            content: ' →';
+            opacity: 0;
+            font-family: var(--sans);
+            font-size: 12px;
+            transition: opacity 0.2s ease;
+        }
+        .resume-org a:hover::after { opacity: 0.5; }
+        .resume-org a:hover { opacity: 0.65; }
 
         /* ── FOOTER ── */
         .site-footer {
@@ -248,6 +313,7 @@
     
         .footer-icons { display: flex; gap: 16px; align-items: center; }
         .footer-icons a { color: rgba(255,255,255,0.55); transition: color 0.2s ease; display: flex; }
+        @view-transition { navigation: auto; }
         .footer-icons a:hover { color: rgba(255,255,255,1); }
     </style>
 </head>
@@ -272,6 +338,7 @@
     </header>
 
     <main class="content">
+        <div class="content-inner">
 
         <!-- Stacked photos with binder clip -->
         <div class="photo-stack-section">
@@ -282,11 +349,37 @@
                 <img src="images/photobooth.jpeg" alt="Christine">
             </div>
 
-            <p class="stack-tagline">designer of (mostly) digital interfaces, manager of people</p>
             <a href="about.html" class="about-link">about me →</a>
         </div>
 
+        <div style="height: 18px;"></div>
 
+        <div class="resume-summary">
+<div class="resume-rows">
+                <div class="resume-row">
+                    <span class="resume-year">2024</span>
+                    <span class="resume-org"><a href="oncallcafe.html">on call café</a></span>
+                    <span class="resume-role">creative captain</span>
+                </div>
+                <div class="resume-row">
+                    <span class="resume-year">2025</span>
+                    <span class="resume-org"><a href="beliapp.html">beli app</a></span>
+                    <span class="resume-role">product consultant</span>
+                </div>
+                <div class="resume-row">
+                    <span class="resume-year">2026</span>
+                    <span class="resume-org"><a href="logapp.html">log app</a></span>
+                    <span class="resume-role">brand strategist</span>
+                </div>
+                <div class="resume-row">
+                    <span class="resume-year">2026</span>
+                    <span class="resume-org"><a href="sourmilk.html">sourmilk</a></span>
+                    <span class="resume-role">growth & seo</span>
+                </div>
+            </div>
+        </div>
+
+        </div><!-- end content-inner -->
     </main>
 
     <footer class="site-footer">

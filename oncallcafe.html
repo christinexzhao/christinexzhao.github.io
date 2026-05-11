@@ -6,7 +6,7 @@
     <title>Christine Z — On Call Café</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,7 +17,7 @@
             --gray:       #666;
             --sans:       'Archivo', system-ui, sans-serif;
             --black-font: 'Archivo Black', system-ui, sans-serif;
-            --serif:      'Playfair Display', Georgia, serif;
+            --serif:      'Cormorant Garamond', Georgia, serif;
         }
 
         body {
@@ -68,8 +68,11 @@
             width: 24px;
             height: 1.5px;
             background: var(--black);
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
         }
+
+        .hero-visible .nav-toggle span { background: #fff; }
+        .hero-visible .site-header h1 { color: #fff; }
 
         .nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         .nav-toggle.open span:nth-child(2) { opacity: 0; }
@@ -162,7 +165,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 16px;
+            gap: 24px;
             padding: 0 40px;
         }
 
@@ -177,25 +180,29 @@
 
         .hero-left .hero-tagline {
             font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(15px, 2vw, 20px);
+            font-size: clamp(18px, 2.5vw, 26px);
             color: rgba(255,255,255,0.75);
-            margin-top: 12px;
+            margin-top: 8px;
             line-height: 1.4;
+        }
+
+        .hero-divider {
+            width: 40px;
+            height: 1px;
+            background: rgba(255,255,255,0.3);
         }
 
         .hero-right {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            margin-top: 8px;
+            gap: 16px;
         }
 
         .hero-role {
-            font-size: 13px;
+            font-size: 17px;
             color: rgba(255,255,255,0.55);
-            line-height: 1.6;
+            line-height: 1.2;
         }
 
         .hero-tags {
@@ -212,6 +219,9 @@
             border-radius: 20px;
             color: rgba(255,255,255,0.8);
         }
+        .tag-pm   { background: rgba(180,120,80,0.35);  border-color: rgba(210,160,110,0.6); }
+        .tag-brand { background: rgba(80,110,160,0.35); border-color: rgba(120,150,200,0.6); }
+        .tag-phys  { background: rgba(90,140,100,0.35); border-color: rgba(130,180,140,0.6); }
 
         .scroll-hint {
             position: absolute;
@@ -240,13 +250,59 @@
         main { flex: 1; }
 
         .case-study {
-            max-width: 760px;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 80px 40px 100px;
+            gap: 0 60px;
+            align-items: start;
+        }
+
+        /* back link spans both columns */
+        .back-link-row {
+            grid-column: 1 / -1;
+            margin-bottom: 24px;
+        }
+
+        /* sticky left sidebar */
+        .sidebar {
+            position: sticky;
+            top: 40px;
+            grid-column: 1;
+        }
+
+        .sidebar-label {
+            font-family: var(--serif);
+            font-size: 28px;
+            letter-spacing: 0.01em;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            line-height: 1.5;
+            display: block;
+            position: absolute;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .sidebar-label.active { opacity: 0.7; position: relative; }
+
+        /* right content column */
+        .content-col {
+            grid-column: 2;
+        }
+
+        .chapter {
+            padding-bottom: 80px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 20px;
         }
 
         .section {
-            margin-bottom: 72px;
+            margin-bottom: 56px;
+        }
+
+        .chapter .section:last-child {
+            margin-bottom: 0;
         }
 
         .section-label {
@@ -255,6 +311,16 @@
             opacity: 0.35;
             margin-bottom: 16px;
             display: block;
+        }
+        .content-tag {
+            display: inline-block;
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(0,0,0,0.22);
+            padding: 3px 9px;
+            border-radius: 20px;
+            opacity: 0.5;
+            margin-bottom: 14px;
         }
 
         .section h3 {
@@ -277,7 +343,7 @@
             width: 100%;
             height: 1px;
             background: rgba(0,0,0,0.1);
-            margin-bottom: 72px;
+            margin-bottom: 56px;
         }
 
         /* ── PROBLEM LIST ── */
@@ -349,6 +415,53 @@
             display: block;
         }
 
+        /* ── MERCH CAROUSEL ── */
+        .merch-carousel {
+            position: relative;
+            margin-top: 24px;
+        }
+
+        .merch-carousel-window {
+            overflow: hidden;
+        }
+
+        .merch-carousel-track {
+            display: grid;
+            grid-template-columns: repeat(7, calc((100% - 20px) / 3));
+            gap: 10px;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .merch-carousel-track img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            display: block;
+        }
+
+        .merch-carousel-arrows {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .merch-arrow {
+            background: none;
+            border: 1px solid rgba(0,0,0,0.22);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+            color: var(--black);
+        }
+
+        .merch-arrow:disabled { opacity: 0.2; cursor: default; }
+        .merch-arrow:not(:disabled):hover { background: rgba(0,0,0,0.05); }
+
         /* ── BACK LINK ── */
         .back-link {
             display: inline-block;
@@ -363,26 +476,11 @@
         .back-link:hover { color: var(--black); }
 
         /* ── PAGE TRANSITION ── */
-        .transition-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--navy);
-            z-index: 9999;
-            pointer-events: none;
-            transform: translateY(100%);
-            transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
-        }
-        .transition-overlay.slide-in-up   { transform: translateY(0); }
-        .transition-overlay.slide-in-down { transform: translateY(0); transition: none; }
-        .transition-overlay.slide-out-up  { transform: translateY(-100%); }
-        .transition-overlay.slide-out-down { transform: translateY(100%); }
-
-        /* ── FOOTER ── */
         .site-footer {
             background: var(--navy);
             color: rgba(255,255,255,0.55);
             font-size: 12px;
-            font-family: var(--sans);
+            font-family: 'Nanum Myeongjo', Georgia, serif;
             letter-spacing: 0.08em;
             text-transform: lowercase;
             padding: 20px 60px;
@@ -394,12 +492,80 @@
         .footer-icons { display: flex; gap: 16px; align-items: center; }
         .footer-icons a { color: rgba(255,255,255,0.55); transition: color 0.2s ease; display: flex; }
         .footer-icons a:hover { color: rgba(255,255,255,1); }
+        @view-transition { navigation: auto; }
+        /* ── BACK PANEL (fixed behind main content, revealed at scroll end) ── */
+        /* ── BACK PANEL ── */
+        .bp-bg{position:fixed;inset:0;z-index:0;opacity:0;transition:opacity 0.5s ease;pointer-events:none;}
+        .bp-bg::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.45);}
+        .bp-bg img{width:100%;height:100%;object-fit:cover;display:block;}
+        .bp-bg.visible{opacity:1;}
+        .back-panel{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;}
+        .bp-main{flex:1;display:flex;align-items:flex-start;padding:140px 80px 80px;position:relative;}
+        .bp-list{width:100%;}
+        .bp-item{display:flex;align-items:baseline;justify-content:space-between;gap:40px;padding:20px 0;border-top:1px solid rgba(0,0,0,0.12);text-decoration:none;color:var(--black);transition:color 0.4s ease,border-color 0.4s ease;}
+        .bp-item:last-child{border-bottom:1px solid rgba(0,0,0,0.12);}
+        .bp-name{font-family:var(--black-font);font-size:clamp(32px,5vw,64px);font-weight:400;line-height:1.1;letter-spacing:-0.02em;transition:opacity 0.3s ease;}
+        .bp-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0;}
+        .bp-tag{font-size:10px;letter-spacing:0.05em;border:1px solid rgba(0,0,0,0.22);padding:3px 9px;border-radius:20px;opacity:0.5;transition:border-color 0.4s ease;}
+        .bp-list:has(.bp-item:hover) .bp-item:not(:hover) .bp-name{opacity:0.2;}
+        .back-panel.hovering .bp-item{color:#fff;border-top-color:rgba(255,255,255,0.25);}
+        .back-panel.hovering .bp-item:last-child{border-bottom-color:rgba(255,255,255,0.25);}
+        .back-panel.hovering .bp-tag{border-color:rgba(255,255,255,0.4);}
+        .back-panel .site-footer{position:relative;display:flex;flex-direction:row;align-items:center;justify-content:space-between;}
+        /* ── PAGE WRAPPER ── */
+        .page-wrapper{position:relative;z-index:2;background:var(--white);}
+        .page-wrapper .site-footer{display:none;}
+        /* ── REVEAL SPACER ── */
+        .reveal-spacer{position:relative;z-index:2;height:100vh;pointer-events:none;}
     </style>
 </head>
 <body>
-
-    <div class="transition-overlay" id="transitionOverlay"></div>
-
+    <div class="bp-bg" id="bpbg-oncall"><img src="images/on%20call/oncall.JPG" alt=""></div>
+    <div class="bp-bg" id="bpbg-alegio"><img src="images/alegio/alegio.jpg" alt=""></div>
+    <div class="bp-bg" id="bpbg-log"><img src="images/log/logmocknew.png" alt=""></div>
+    <div class="bp-bg" id="bpbg-beli"><img src="images/beli/belimock.png" alt=""></div>
+    <div class="bp-bg" id="bpbg-sourmilk"><img src="images/sourmilk/grocerystore.JPG" alt=""></div>
+    <div class="back-panel">
+        <div class="bp-main">
+            <div class="bp-list">
+                <a href="oncallcafe.html" class="bp-item" data-bg="bpbg-oncall">
+                    <span class="bp-name">on call café</span>
+                    <div class="bp-tags"><span class="bp-tag">product management</span><span class="bp-tag">social media</span><span class="bp-tag">physical design</span><span class="bp-tag">event planning</span><span class="bp-tag">product marketing</span></div>
+                </a>
+                <a href="alegiochocolate.html" class="bp-item" data-bg="bpbg-alegio">
+                    <span class="bp-name">alegio chocolate</span>
+                    <div class="bp-tags"><span class="bp-tag">product marketing</span><span class="bp-tag">branding</span><span class="bp-tag">merch</span><span class="bp-tag">consumer research</span></div>
+                </a>
+                <a href="logapp.html" class="bp-item" data-bg="bpbg-log">
+                    <span class="bp-name">log app</span>
+                    <div class="bp-tags"><span class="bp-tag">ui/ux</span><span class="bp-tag">social media</span><span class="bp-tag">merch</span></div>
+                </a>
+                <a href="beliapp.html" class="bp-item" data-bg="bpbg-beli">
+                    <span class="bp-name">beli app</span>
+                    <div class="bp-tags"><span class="bp-tag">ui/ux</span><span class="bp-tag">user research</span></div>
+                </a>
+                <a href="sourmilk.html" class="bp-item" data-bg="bpbg-sourmilk">
+                    <span class="bp-name">sourmilk</span>
+                    <div class="bp-tags"><span class="bp-tag">seo</span><span class="bp-tag">branding</span></div>
+                </a>
+            </div>
+        </div>
+        <footer class="site-footer">
+            Christine Zhao © 2026
+            <div class="footer-icons">
+                <a href="mailto:chrzhao@stanford.edu" title="email" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/christine-zhao/" title="linkedin" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://docs.google.com/document/d/e/2PACX-1vTQKU-YS7dxEbHs5rHO5EJvOMKOC45Jk4Fn0W0msWTnugqCCU1Mi_VJdQi4lpZCD8KsX2klMEfvL2FV/pub" title="resume" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                </a>
+            </div>
+        </footer>
+    </div>
+    <div class="page-wrapper">
     <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="menu">
         <span></span><span></span><span></span>
     </button>
@@ -426,12 +592,15 @@
                 <h2>on call café</h2>
                 <p class="hero-tagline">stanford's first student-run late-night café</p>
             </div>
+            <div class="hero-divider"></div>
             <div class="hero-right">
                 <p class="hero-role">captain of the creative team &nbsp;·&nbsp; september 2024 – now</p>
                 <div class="hero-tags">
                     <span class="tag">product management</span>
-                    <span class="tag">branding</span>
-                    <span class="tag">physical</span>
+                    <span class="tag">social media</span>
+                    <span class="tag">physical design</span>
+                    <span class="tag">event planning</span>
+                    <span class="tag">product marketing</span>
                 </div>
             </div>
         </div>
@@ -441,101 +610,133 @@
     <main>
         <div class="case-study">
 
-            <a href="scrollprojects.html" class="back-link">← back to projects</a>
-
-            <div class="divider"></div>
-
-            <!-- Section 1 -->
-            <div class="section">
-                <span class="section-label">01 — what is on call café</span>
-                <h3>stanford's living room.</h3>
-                <p>on call café was founded by stanford design students who identified the problem that campus lacked a late-night third space to connect, meet friends, and build community. existing spaces either closed too early, felt rowdy, or were overly academic.</p>
-                <p>in 2023, a group of students designed the space from the ground up. literally. the empty space transformed into a warm, dimly-lit, student-centered café. open sunday to thursday, 7:30–11:30pm — students come in to study, grab a drink, and enjoy events hosted by campus organizations.</p>
-                <p>just over a year in, on call café has become a cornerstone of the student experience, having served over 88.8% of stanford's population. and it's still growing.</p>
+            <div class="back-link-row">
+                <a href="scrollprojects.html" class="back-link">← back to projects</a>
             </div>
 
-            <!-- Photo grid -->
-            <div class="photo-grid">
-                <img src="images/on%20call/on%20call%201.jpg" alt="">
-                <img src="images/on%20call/on%20call%202.png" alt="">
-                <img src="images/on%20call/on%20call%203.png" alt="">
-                <img src="images/on%20call/filters_quality(70).webp" alt="">
-                <img src="images/on%20call/filters_quality(70)%20(1).webp" alt="">
-                <img src="images/on%20call/filters_quality(70)%20(2).webp" alt="">
+            <!-- Sticky sidebar -->
+            <div class="sidebar">
+                <span class="sidebar-label active" id="label-1">what is on call café</span>
+                <span class="sidebar-label" id="label-2">what i do</span>
+                <span class="sidebar-label" id="label-3">what i've learned</span>
             </div>
 
-            <div class="divider"></div>
+            <!-- Right content column -->
+            <div class="content-col">
 
-            <!-- Section 2 -->
-            <div class="section">
-                <span class="section-label">02 — what i do</span>
-                <h3>creative captain &amp; everything in between.</h3>
-                <p>i joined on call's creative team as a freshman in 2024 — when they were just under a year old. since then, i've become junior captain, then senior captain, leading a team of 6 creatives to manage the café's physical and online presence.</p>
-            </div>
-
-            <!-- 2a: Management -->
-            <div class="section">
-                <span class="section-label">management</span>
-                <h3>keeping the whole ship running.</h3>
-                <p>as an executive member, my biggest responsibility is cross-team communication. every week brings a new problem to solve:</p>
-                <ul class="problem-list">
-                    <li>the community and culture team just sent in a request for 100 custom stickers, needed in 5 days. what do you do?</li>
-                    <li>you hear the molly matcha is consistently underselling. what do you do to increase its sales?</li>
-                    <li>you're in charge of marketing a valentine's week speed dating event. how do you make sure people show up?</li>
-                    <li>what angle should the creative team take on a student art grant to ensure funding for the space?</li>
-                </ul>
-            </div>
-
-            <!-- 2b: Physical space -->
-            <div class="section">
-                <span class="section-label">physical space</span>
-                <h3>building the room, literally.</h3>
-                <p>trips to sf to pick up furniture sourced from facebook marketplace. routine upkeep of the rugs, chairs, and lights. sourcing student art and frames for new walls. the space is always evolving — and that's a feature, not a bug.</p>
-            </div>
-
-            <!-- 2c: Social + website -->
-            <div class="section">
-                <span class="section-label">social media &amp; website</span>
-                <h3>the digital face of the café.</h3>
-                <p>managing the café's online presence across platforms — from content strategy to day-to-day posting. follow us <a href="https://www.instagram.com/oncall.cafe" target="_blank" class="inline-link">@oncall.cafe</a> on instagram, and visit the website at <a href="https://www.oncall.cafe" target="_blank" class="inline-link">oncall.cafe</a>.</p>
-                <div class="screenshot-row">
-                    <img src="images/on%20call/Screenshot%202026-05-03%20at%2010.16.03%20PM.png" alt="on call website">
-                    <img src="images/on%20call/Screenshot%202026-05-03%20at%2010.17.54%20PM.png" alt="on call website">
-                    <img src="images/on%20call/Screenshot%202026-05-03%20at%2010.22.23%20PM.png" alt="on call website">
+                <!-- Chapter 1 -->
+                <div class="chapter" data-chapter="1">
+                    <div class="section">
+                        <h3>stanford's living room.</h3>
+                        <p>on call café was founded by design students who identified the problem that campus lacked a late-night third space to <em>connect, meet friends, and build community.</em> existing spaces either closed too early, felt rowdy, or were overly academic.</p>
+                        <p>in 2023, a group of students transformed an empty space in old union into a warm, dimly-lit, student-centered café. open sunday to thursday, 7:30–11:30pm—students come in to study, grab a drink, and enjoy events hosted by campus organizations.</p>
+                        <p>just over a year in, on call café has become a cornerstone of the student experience, having served <em>over 88.8%</em> of stanford's population. and it's still growing.</p>
+                    </div>
+                    <img src="images/on%20call/on%20call%201.jpg" alt="" style="width:100%;display:block;margin-bottom:10px;">
+                    <img src="images/on%20call/on%20call%203.webp" alt="" style="width:100%;display:block;">
                 </div>
-            </div>
 
-            <!-- 2d: Events -->
-            <div class="section">
-                <span class="section-label">event planning</span>
-                <h3>making things happen.</h3>
-                <p>advertising admit weekend events. coordinating vendors and campus organizations. sourcing funding and building partnerships. events are where the physical and digital sides of the creative team come together.</p>
-            </div>
-
-            <!-- 2e: Merch -->
-            <div class="section">
-                <span class="section-label">merch</span>
-                <h3>wearable brand.</h3>
-                <p>[ describe the merch work here — design, sourcing, drops, etc. ]</p>
-                <div class="photo-grid">
-                    <div class="placeholder-block"></div>
-                    <div class="placeholder-block"></div>
-                    <div class="placeholder-block"></div>
+                <!-- Chapter 2 -->
+                <div class="chapter" data-chapter="2">
+                    <div class="section">
+                        <h3>captain of the creative team.</h3>
+                        <p>i joined on call's creative team as a freshman in 2024, when they were just under a year old. since then, i've become <em>junior captain</em>, then <em>senior captain</em>, leading a team of 6 creatives to manage the café's physical and online presence.</p>
+                    </div>
+                    <div class="section">
+                        <span class="content-tag">product management</span>
+                        <h3>keeping the whole ship running.</h3>
+                        <p>as a captain, my biggest responsibility is cross-team communication. every week brings a new problem to solve:</p>
+                        <ul class="problem-list">
+                            <li><em>the executive team</em> just sent in a request for 100 custom stickers, needed for an event in 5 days. how do i reasonably delegate the tasks of graphic design, sticker production, and funding negotiation?</li>
+                            <li><em>the finance team</em> reports that the molly matcha is consistently underselling. what can the creative team do to increase sales?</li>
+                            <li><em>the café team</em> is suffering from low morale. what initiatives can the creative team come up with to boost employee satisfaction and motivation?</li>
+                            <li><em>the community and culture team</em> planned a speed dating event for valentine's week, but turnout has historically been low. what marketing tactics might draw more people in?</li>
+                        </ul>
+                    </div>
+                    <img src="images/on%20call/birthday.jpg" alt="" style="width:100%;display:block;margin-bottom:56px;">
+                    <div class="section">
+                        <span class="content-tag">social media</span>
+                        <h3>the digital face of the café.</h3>
+                        <p>i manage the café's online presence across platforms, from website to social media. follow us <a href="https://www.instagram.com/oncall.cafe" target="_blank" class="inline-link">@oncall.cafe</a> on instagram and visit the website at <a href="https://www.oncall.cafe" target="_blank" class="inline-link">oncall.cafe</a>.</p>
+                        <div style="margin-top:24px;">
+<behold-widget feed-id="Jy7JtFojKPkckmlz81be"></behold-widget>
+<script>
+  (() => {
+    const d=document,s=d.createElement("script");s.type="module";
+    s.src="https://w.behold.so/widget.js";d.head.append(s);
+  })();
+</script>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <span class="content-tag">physical design</span>
+                        <h3>hello, facebook marketplace.</h3>
+                        <p>would i have guessed that joining a café would lead me to haggling on facebook marketplace? no, but alas. i worked within our budget of $1500 to source furniture from all over the bay area and helped design the layout of the space. i also manage the routine upkeep of rugs, chairs, and lights, and source student art for new walls.</p>
+                        <div style="display:flex;gap:10px;margin-top:20px;">
+                            <img src="images/on%20call/lamp.jpeg" alt="" style="flex:1;min-width:0;height:340px;object-fit:cover;">
+                            <img src="images/on%20call/rug.jpeg" alt="" style="flex:1;min-width:0;height:340px;object-fit:cover;">
+                            <img src="images/on%20call/dollar.png" alt="" style="flex:1;min-width:0;height:340px;object-fit:cover;">
+                        </div>
+                    </div>
+                    <div class="section">
+                        <span class="content-tag">event planning</span>
+                        <h3>making things happen.</h3>
+                        <p>at on call, large events that involve all teams are called "Big Ass Disruptions." creative handles all of the ideating and marketing of such events. classics include:</p>
+                        <ul class="problem-list">
+                            <li>november 3... on call's birthday</li>
+                            <li>valentine's week, a week of love</li>
+                            <li>admit weekend, welcoming the next generation of on-callers!</li>
+                        </ul>
+                        <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+                            <img src="images/on%20call/loveoncall.jpg" alt="" style="width:100%;display:block;">
+                        </div>
+                    </div>
+                    <div class="section">
+                        <span class="content-tag">product marketing</span>
+                        <h3>merch & menu photoshoots.</h3>
+                        <p>shooting products while maintaining brand identity. swipe to see some photography by the wonderful Kailani & Maggie!</p>
+                        <div class="merch-carousel">
+                            <div class="merch-carousel-window">
+                                <div class="merch-carousel-track" id="merchTrack">
+                                    <img src="images/on%20call/stickers.jpg" alt="stickers">
+                                    <img src="images/on%20call/spring.JPG" alt="hat">
+                                    <img src="images/on%20call/spring2.JPG" alt="spring2">
+                                    <img src="images/on%20call/punch%20cards.JPG" alt="punch cards">
+                                    <img src="images/on%20call/hoodie.JPG" alt="hoodie">
+                                    <img src="images/on%20call/hat.JPG" alt="hat">
+                                    <img src="images/on%20call/hatt.JPG" alt="matchmaking">
+                                </div>
+                            </div>
+                            <div class="merch-carousel-arrows">
+                                <button class="merch-arrow" id="merchPrev" onclick="merchMove(-1)" disabled>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button class="merch-arrow" id="merchNext" onclick="merchMove(1)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="divider"></div>
+                <!-- Chapter 3 -->
+                <div class="chapter" data-chapter="3">
+                    <div class="section">
+                        <h3>business is always, always the people.</h3>
+                        <p>on call is so much more to me than a job. here, i've learned how to manage a team toward a common goal, how to mentor someone, and be mentored by someone (shoutout my mentors kailani and lucy).</p>
+                        <p>above all, i learned that business—and any other project—is people. a team is not measured by its aggregate skillset, but rather by the strength of its community. i've learned first-hand: retreats, team-bonding, and check-ins are important. in a team environment like this, mutual trust is the most important thing one could cultivate.</p>
+                        <img src="images/on%20call/team.JPG" alt="" style="width:100%;display:block;margin-top:24px;margin-bottom:24px;">
+                        <p>i can't help but find myself deeply involved in projects i care about. i've found myself doing dishes until 1am and running emergency bread runs 15 minutes before opening. still, i come back to this community. on call has given me so much, and i aim to give that back.</p>
+                        <p>my goal is to cement On Call Café as not just a startup, but a legacy institution. I might not be here to witness its expansion beyond Old Union within my four years at Stanford, but I know it will one day, and I hope to return to generations of On Call-ers to come.</p>
+                        <div style="position:relative;margin-top:24px;overflow:visible;">
+                            <img src="images/on%20call/teamphotos.jpg" alt="" style="width:100%;display:block;">
+                            <img src="images/on%20call/quote.jpg" alt="" style="position:absolute;bottom:-32px;right:-28px;width:52%;transform:rotate(-2deg);box-shadow:2px 6px 20px rgba(0,0,0,0.25);">
+                        </div>
+                        <div style="height:80px;"></div>
+                    </div>
+                </div>
 
-            <!-- Section 3 -->
-            <div class="section">
-                <span class="section-label">03 — what i've learned</span>
-                <h3>business is always, always the people.</h3>
-                <p>on call is so much more to me than a job. here, i've learned how to manage a team toward a common goal — how to motivate people to collectively want an organization to succeed, how to mentor someone and be mentored by someone (shoutout my mentors kailani and lucy). i've also learned how to trust in my co-workers — turned friends — while maintaining a cohesive vision.</p>
-                <p>above all, i learned that business — and any other project — is people. it's always the people, and i try to extend that care for my teammates at any chance i get. and.. i barista! a few great cups of latte art and counting.</p>
-                <p>i can't help but find myself deeply involved in projects i care about. i've found myself driving lamp posts almost the length of my car back to campus, doing dishes until 1am, and running emergency bread runs to and from whole foods. still, i come back to this community. on call has given me so much, and i aim to give that back.</p>
-                <p>my goal is to cement On Call Café as not just a startup, but a legacy institution. I might not be here to witness its expansion beyond Old Union within my four years at Stanford, but I know it will one day, and I hope to return to generations of On Call-ers to come.</p>
-            </div>
-
+            </div><!-- end content-col -->
         </div>
     </main>
 
@@ -555,52 +756,34 @@
     </footer>
 
     <script>
-        const overlay = document.getElementById('transitionOverlay');
-        if (new URLSearchParams(window.location.search).get('enter')) {
-            overlay.classList.add('slide-in-up');
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76,0,0.24,1)';
-                overlay.classList.remove('slide-in-up'); overlay.classList.add('slide-out-up');
-            }));
-        }
-        const params = new URLSearchParams(window.location.search);
+        function goTo(url) { window.location.href = url; }
 
-        if (params.get('scrollbottom')) {
-            // arrived from scrollprojects sliding down — overlay comes from above, slides out downward
-            overlay.classList.add('slide-in-down');
-            document.documentElement.style.scrollBehavior = 'auto';
-            window.scrollTo(0, document.body.scrollHeight);
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)';
-                overlay.classList.remove('slide-in-down');
-                overlay.classList.add('slide-out-down');
-            }));
-        }
 
-        // scroll down past bottom → slide overlay up → go to scrollprojects
-        let navFired = false;
+        // Back-panel background image hover
+        const backPanel = document.querySelector('.back-panel');
+        document.querySelectorAll('.bp-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                backPanel.classList.add('hovering');
+                const bg = document.getElementById(item.dataset.bg);
+                if (bg) bg.classList.add('visible');
+            });
+            item.addEventListener('mouseleave', () => {
+                backPanel.classList.remove('hovering');
+                const bg = document.getElementById(item.dataset.bg);
+                if (bg) bg.classList.remove('visible');
+            });
+            item.addEventListener('click', e => {
+                e.preventDefault();
+                goTo(item.getAttribute('href'));
+            });
+        });
+
+        // Scroll down at bottom → reveal back panel / go to scrollprojects
         window.addEventListener('wheel', (e) => {
-            if (navFired) return;
-            const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 8;
-            if (atBottom && e.deltaY > 0) {
-                navFired = true;
-                overlay.style.transition = 'none';
-                overlay.classList.remove('slide-in-up', 'slide-in-down', 'slide-out-up', 'slide-out-down');
-                overlay.getBoundingClientRect();
-                overlay.style.transition = 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)';
-                overlay.classList.add('slide-in-up');
-                setTimeout(() => {
-                    window.location.href = 'scrollprojects.html?from=oncall';
-                }, 580);
-            }
+            const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 10;
+            if (atBottom && e.deltaY > 0) goTo('scrollprojects.html?from=oncall');
         }, { passive: true });
 
-        // fade overlay out as user scrolls
-        window.addEventListener('scroll', () => {
-            const overlay = document.getElementById('heroOverlay');
-            const progress = Math.min(window.scrollY / (window.innerHeight * 0.5), 1);
-            overlay.style.opacity = 1 - progress;
-        });
 
         function toggleNav() {
             const open = document.getElementById('navMenu').classList.toggle('open');
@@ -613,5 +796,7 @@
             document.getElementById('navOverlay').classList.remove('visible');
         }
     </script>
+    </div><!-- /.page-wrapper -->
+    <div class="reveal-spacer"></div>
 </body>
 </html>

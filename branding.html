@@ -6,7 +6,7 @@
     <title>Christine Z — Branding</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;1,400&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root { --white:#FAFAF8; --navy:#1E2840; --black:#1A1A1A; --sans:'Archivo',system-ui,sans-serif; --black-font:'Archivo Black',system-ui,sans-serif; --serif:'Playfair Display',Georgia,serif; }
@@ -21,11 +21,12 @@
         .nav-menu.open{transform:translateX(0);} .nav-menu a{font-family:var(--black-font);font-size:20px;font-weight:400;letter-spacing:0.02em;text-transform:lowercase;color:var(--black);text-decoration:none;margin-bottom:28px;opacity:0.4;transition:opacity 0.2s ease;} .nav-menu a:hover,.nav-menu a.active{opacity:1;} .nav-menu a:last-child{position:absolute;bottom:60px;}
         .nav-overlay{position:fixed;inset:0;z-index:340;display:none;} .nav-overlay.visible{display:block;}
         main { flex:1; display:flex; align-items:center; justify-content:center; }
-        .coming-soon { font-family:var(--serif); font-style:italic; font-size:clamp(24px,4vw,48px); opacity:0.35; }
-        .site-footer { background:var(--navy); color:rgba(255,255,255,0.55); font-size:12px; letter-spacing:0.08em; text-transform:lowercase; padding:20px 60px; display:flex; align-items:center; justify-content:space-between; }
+        .coming-soon { font-family:var(--serif); font-size:clamp(24px,4vw,48px); opacity:0.35; }
+        .site-footer { background:var(--navy); color:rgba(255,255,255,0.55); font-size:12px; font-family:'Nanum Myeongjo',Georgia,serif; letter-spacing:0.08em; text-transform:lowercase; padding:20px 60px; display:flex; align-items:center; justify-content:space-between; }
         .footer-icons { display:flex; gap:16px; align-items:center; }
         .footer-icons a { color:rgba(255,255,255,0.55); transition:color 0.2s ease; display:flex; }
         .footer-icons a:hover { color:rgba(255,255,255,1); }
+        @view-transition { navigation: auto; }
     </style>
 </head>
 <body>

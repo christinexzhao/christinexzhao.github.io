@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s https://www.evahoffman.com/mulu)",
+      "Bash(curl -s \"https://static1.squarespace.com/static/sitecss/5d5591b99ce6c9000154103d/83/56d9c12107eaa07660adbcad/5d5591b99ce6c90001541054/354/site.css?nocustom=true\")"
+    ]
+  }
+}
