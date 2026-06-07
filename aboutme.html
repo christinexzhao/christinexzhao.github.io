@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christine Z — About</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;1,400&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cream:      #F5EFC7;
+            --white:      #FAFAF8;
+            --navy:       #1E2840;
+            --black:      #1A1A1A;
+            --gray:       #666;
+            --sans:       'Archivo', system-ui, sans-serif;
+            --black-font: 'Archivo Black', system-ui, sans-serif;
+            --serif:      'EB Garamond', Georgia, serif;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--sans);
+            text-transform: lowercase;
+            background: var(--navy);
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 20px 32px;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .site-header h1 {
+            font-family: var(--black-font);
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            line-height: 1;
+            color: white;
+        }
+
+        .site-header a { text-decoration: none; color: inherit; }
+
+        /* ── HAMBURGER ── */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            left: 28px;
+            z-index: 200;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 4px;
+            mix-blend-mode: difference;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: white;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .nav-toggle.open span:nth-child(2) { opacity: 0; }
+        .nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        /* ── NAV MENU ── */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--white);
+            border-right: 1px solid rgba(0,0,0,0.1);
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 40px;
+            transform: translateX(-100%);
+            transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-menu.open { transform: translateX(0); }
+
+        .nav-menu a {
+            font-family: var(--black-font);
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            text-transform: lowercase;
+            color: var(--black);
+            text-decoration: none;
+            margin-bottom: 28px;
+            opacity: 0.4;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-menu a:hover { opacity: 1; }
+        .nav-menu a:last-child { position: absolute; bottom: 60px; }
+        .nav-menu a.active { opacity: 1; }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 140;
+            display: none;
+        }
+        .nav-overlay.visible { display: block; }
+
+        /* ── SCROLL CONTAINER ── */
+        .scroll-container {
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+
+        /* ── SLIDES ── */
+        .slide {
+            height: 100vh;
+            position: relative;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .slide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: var(--navy);
+        }
+
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.72) 0%,
+                rgba(0, 0, 0, 0.28) 38%,
+                rgba(0, 0, 0, 0.05) 65%,
+                rgba(0, 0, 0, 0.00) 100%
+            );
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 80px 11vh;
+            max-width: 680px;
+        }
+
+        .slide-content p {
+            color: rgba(255, 255, 255, 0.93);
+            font-family: var(--serif);
+            font-size: 30px;
+            line-height: 1.55;
+            font-style: italic;
+            text-transform: none;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.2);
+        }
+
+        /* ── NAV DOTS ── */
+        .nav-dots {
+            position: fixed;
+            right: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .nav-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: white;
+            transform: scale(1.5);
+        }
+
+        /* ── SCROLL INDICATOR ── */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        .scroll-indicator.hidden { opacity: 0; }
+
+        .scroll-indicator svg {
+            animation: nudge 2s ease-in-out infinite;
+        }
+
+        @keyframes nudge {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(7px); }
+        }
+
+        /* ── COVER SLIDE ── */
+        .cover-slide {
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cover-title {
+            font-family: var(--serif);
+            font-size: clamp(48px, 8vw, 96px);
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.88);
+            letter-spacing: 0.01em;
+            text-transform: none;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        @view-transition { navigation: auto; }
+    </style>
+</head>
+<body>
+
+    <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+
+    <nav class="nav-menu" id="navMenu">
+        <a href="index.html">selected projects</a>
+        <a href="printpublications.html">print publications</a>
+        <a href="personal.html">personal</a>
+        <a href="aboutme.html" class="active">about me</a>
+    </nav>
+
+    <header class="site-header">
+        <a href="index.html"><h1>Christine Z</h1></a>
+    </header>
+
+    <div class="nav-dots" id="navDots"></div>
+
+    <div class="scroll-indicator" id="scrollIndicator">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.65">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </div>
+
+    <div class="scroll-container" id="scrollContainer">
+
+        <section class="slide cover-slide" data-index="0">
+            <p class="cover-title">about me.</p>
+        </section>
+
+        <section class="slide" data-index="1">
+            <div class="slide-bg" style="background-image: url('images/about%20me/me.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Hi, my name is Christine! Some friends call me CZ, some friends know me as @xtinezhao.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="2">
+            <div class="slide-bg" style="background-image: url('images/about%20me/garden.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>I grew up in many places, but I call sunny Northern California my home.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="3">
+            <div class="slide-bg" style="background-image: url('images/about%20me/room.jpeg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Currently, I'm a student at Stanford University, in the heart of the Bay Area.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="4">
+            <div class="slide-bg" style="background-image: url('images/about%20me/flute.jpg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Art has always been a part of my life. Through music…</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="5">
+            <div class="slide-bg" style="background-image: url('images/about%20me/photo.PNG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Through photography…</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="6">
+            <div class="slide-bg" style="background-image: url('images/about%20me/pottery.jpg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Through pottery, a lifelong hobby…</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="7">
+            <div class="slide-bg" style="background-image: url('images/about%20me/collage.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>And now through design of digital and physical spaces!</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="8">
+            <div class="slide-bg" style="background-image: url('images/about%20me/norcal.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>I'm a firm believer that design can and should be used for good in this world.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="9">
+            <div class="slide-bg" style="background-image: url('images/about%20me/consciousness.jpg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>My background in psychology has greatly informed my interest in designing for mental health and community.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="10">
+            <div class="slide-bg" style="background-image: url('images/about%20me/friends.jpg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>In this increasingly digital age, I believe that in-person experiences are the key to alleviating loneliness.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="11">
+            <div class="slide-bg" style="background-image: url('images/about%20me/oncall.jpg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Looking into the creation of third-spaces, CPGs, and UI/UX design to solve these problems.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="12">
+            <div class="slide-bg" style="background-image: url('images/about%20me/dinner.jpg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Outside of my professional pursuits, I'm a fiend for a good meal…</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="13">
+            <div class="slide-bg" style="background-image: url('images/about%20me/concert.jpg')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>A frequent enjoyer of live music…</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="14">
+            <div class="slide-bg" style="background-image: url('images/about%20me/dog.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>A quality-time-aholic…</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="15">
+            <div class="slide-bg" style="background-image: url('images/about%20me/food.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>And always in pursuit of new experiences.</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="16">
+            <div class="slide-bg" style="background-image: url('images/about%20me/nyc.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>In my near future, I hope to pursue a creative career in New York City, and…</p>
+            </div>
+        </section>
+
+        <section class="slide" data-index="17">
+            <div class="slide-bg" style="background-image: url('images/about%20me/fireworks.JPG')"></div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <p>Never stop learning.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function toggleNav() {
+            const open = document.getElementById('navMenu').classList.toggle('open');
+            document.getElementById('navToggle').classList.toggle('open', open);
+            document.getElementById('navOverlay').classList.toggle('visible', open);
+        }
+        function closeNav() {
+            document.getElementById('navMenu').classList.remove('open');
+            document.getElementById('navToggle').classList.remove('open');
+            document.getElementById('navOverlay').classList.remove('visible');
+        }
+
+        const container = document.getElementById('scrollContainer');
+        const slides    = Array.from(document.querySelectorAll('.slide'));
+        const dotsWrap  = document.getElementById('navDots');
+        const indicator = document.getElementById('scrollIndicator');
+
+        slides.forEach((_, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'nav-dot' + (i === 0 ? ' active' : '');
+            btn.setAttribute('aria-label', 'go to slide ' + (i + 1));
+            btn.addEventListener('click', () => slides[i].scrollIntoView({ behavior: 'smooth' }));
+            dotsWrap.appendChild(btn);
+        });
+
+        const dots = Array.from(dotsWrap.querySelectorAll('.nav-dot'));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const idx = parseInt(entry.target.dataset.index);
+                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                indicator.classList.toggle('hidden', idx > 0);
+            });
+        }, { threshold: 0.6, root: container });
+
+        slides.forEach(s => observer.observe(s));
+    </script>
+</body>
+</html>

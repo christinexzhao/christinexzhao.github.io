@@ -120,79 +120,206 @@
         }
         .nav-overlay.visible { display: block; }
 
-        /* ── PAGE TITLE ── */
-        .page-title {
-            padding: 120px 80px 48px;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            margin-bottom: 64px;
+        /* ── PHOTO STACK ── */
+        .photo-stack-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 120px 40px 72px;
         }
 
-        .page-title h2 {
-            font-family: var(--black-font);
-            font-size: 48px;
-            font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.01em;
+        .photo-stack-wrapper {
+            position: relative;
+            width: 380px;
+            height: 300px;
+            cursor: pointer;
+            transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                        height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .page-title p {
-            font-family: var(--serif);
-            font-size: 16px;
+        .photo-stack-wrapper.spread {
+            width: min(1060px, 95vw);
+            height: 640px;
+        }
+
+        .photo-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 260px;
+            height: 195px;
+            transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) rotate(var(--sr));
+            transition: transform 0.65s cubic-bezier(0.34, 1.25, 0.64, 1);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            box-shadow: 2px 4px 16px rgba(0,0,0,0.22);
+        }
+
+        /* stagger the spread animation per photo */
+        .photo-item:nth-child(1)  { transition-delay: 0ms; }
+        .photo-item:nth-child(2)  { transition-delay: 22ms; }
+        .photo-item:nth-child(3)  { transition-delay: 44ms; }
+        .photo-item:nth-child(4)  { transition-delay: 66ms; }
+        .photo-item:nth-child(5)  { transition-delay: 88ms; }
+        .photo-item:nth-child(6)  { transition-delay: 110ms; }
+        .photo-item:nth-child(7)  { transition-delay: 132ms; }
+        .photo-item:nth-child(8)  { transition-delay: 154ms; }
+        .photo-item:nth-child(9)  { transition-delay: 176ms; }
+        .photo-item:nth-child(10) { transition-delay: 198ms; }
+        .photo-item:nth-child(11) { transition-delay: 220ms; }
+        .photo-item:nth-child(12) { transition-delay: 242ms; }
+        .photo-item:nth-child(13) { transition-delay: 264ms; }
+        .photo-item:nth-child(14) { transition-delay: 286ms; }
+
+        .photo-stack-wrapper.spread .photo-item {
+            transform: translate(calc(-50% + var(--ex)), calc(-50% + var(--ey))) rotate(var(--er));
+        }
+
+        .stack-hint {
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            letter-spacing: 0.08em;
             color: var(--gray);
-            margin-top: 12px;
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
-        /* ── CONTENT ── */
-        .content {
+        .photo-stack-wrapper.spread .stack-hint {
+            opacity: 0;
+        }
+
+        /* ── ABOUT LAYOUT ── */
+        .about-layout {
+            display: grid;
+            grid-template-columns: 200px 1fr;
             max-width: 960px;
             margin: 0 auto;
             padding: 0 80px 100px;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 64px;
+            gap: 0 60px;
             align-items: start;
         }
 
-        .about-photo {
-            position: relative;
+        .sidebar {
+            position: sticky;
+            top: 40px;
         }
 
-        .about-photo img {
-            width: 100%;
-            object-fit: cover;
+        .sidebar-label {
+            font-family: var(--serif);
+            font-size: 24px;
+            letter-spacing: 0.01em;
+            opacity: 0.7;
+            line-height: 1.5;
             display: block;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 16px;
+            transition: opacity 0.4s ease;
         }
 
-        .about-photo .photo-caption {
+        .sidebar-label.hidden { opacity: 0; }
+
+        .contact-link {
+            color: var(--black);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            transition: border-color 0.2s ease;
+        }
+
+        .contact-link:hover { border-color: var(--black); }
+
+        .inquiry-form { margin-top: 28px; }
+
+        .form-field { margin-bottom: 24px; }
+
+        .form-field label {
+            display: block;
+            font-size: 10.5px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.4;
+            margin-bottom: 8px;
+        }
+
+        .form-field input,
+        .form-field textarea {
+            width: 100%;
+            border: 1px solid rgba(0,0,0,0.18);
+            border-radius: 2px;
+            padding: 10px 12px;
+            font-family: var(--sans);
+            font-size: 14px;
+            background: transparent;
+            color: var(--black);
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s ease;
+            text-transform: lowercase;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus { border-color: var(--black); }
+
+        .form-submit {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--black);
+            font-family: var(--black-font);
             font-size: 11px;
-            color: var(--gray);
-            margin-top: 8px;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 0 0 2px;
+            transition: opacity 0.2s ease;
+            color: var(--black);
         }
 
-        .about-text .section {
-            margin-bottom: 36px;
+        .form-submit:hover { opacity: 0.5; }
+        .form-submit:disabled { opacity: 0.3; cursor: default; }
+
+        .form-status {
+            margin-top: 16px;
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 13.5px;
+            opacity: 0.65;
+            min-height: 20px;
         }
 
-        .about-text p {
-            font-size: 14.5px;
+        .chapter h3 {
+            font-family: var(--black-font);
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .chapter {
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 20px;
+            padding-bottom: 80px;
+        }
+
+        .chapter.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chapter p {
+            font-size: 15px;
             line-height: 1.85;
             color: var(--black);
             margin-bottom: 14px;
+            opacity: 0.85;
         }
 
-        .about-text h3 {
-            font-family: var(--black-font);
-            font-size: 11px;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            opacity: 0.4;
-            margin-bottom: 10px;
-        }
 
         strong {
             font-family: var(--black-font);
@@ -212,11 +339,115 @@
             align-items: center;
             justify-content: space-between;
         }
-    
+
         .footer-icons { display: flex; gap: 16px; align-items: center; }
         .footer-icons a { color: rgba(255,255,255,0.55); transition: color 0.2s ease; display: flex; }
         .footer-icons a:hover { color: rgba(255,255,255,1); }
         @view-transition { navigation: auto; }
+
+        /* ── LIGHTBOX ── */
+        .photo-stack-wrapper.spread .photo-item {
+            cursor: zoom-in;
+        }
+
+        .photo-stack-wrapper.spread .photo-item img {
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .photo-stack-wrapper.spread .photo-item:hover img {
+            transform: scale(1.05);
+            box-shadow: 4px 8px 28px rgba(0,0,0,0.32);
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(12, 12, 12, 0.93);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 92vw;
+        }
+
+        .lightbox-content img {
+            max-width: 88vw;
+            max-height: 82vh;
+            object-fit: contain;
+            display: block;
+            transition: opacity 0.2s ease;
+        }
+
+        .lightbox-caption {
+            color: rgba(255,255,255,0.55);
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 18px;
+            text-align: center;
+            letter-spacing: 0.02em;
+            min-height: 20px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s;
+            font-weight: 300;
+        }
+
+        .lightbox-close:hover { color: white; }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 16px;
+            transition: color 0.2s;
+            font-family: var(--sans);
+            letter-spacing: -0.02em;
+        }
+
+        .lightbox-nav:hover { color: white; }
+        .lightbox-nav.prev { left: 16px; }
+        .lightbox-nav.next { right: 16px; }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.3);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+        }
     </style>
 </head>
 <body>
@@ -229,7 +460,6 @@
 
     <nav class="nav-menu" id="navMenu">
         <a href="index.html">selected projects</a>
-        <a href="branding.html">branding</a>
         <a href="printpublications.html">print publications</a>
         <a href="personal.html">personal</a>
         <a href="about.html" class="active">about me</a>
@@ -239,44 +469,133 @@
         <a href="index.html"><h1>Christine Z</h1></a>
     </header>
 
-    <div class="page-title">
-        <h2>about me.</h2>
-        <p>aspiring product manager & design consultant</p>
-    </div>
+    <main>
 
-    <main class="content">
-        <div class="about-grid">
+        <!-- ── PHOTO STACK ── -->
+        <div class="photo-stack-section">
+            <div class="photo-stack-wrapper" id="photoStack">
 
-            <div class="about-photo">
-                <!-- Replace with your photo -->
-                <img src="images/photobooth.jpeg" alt="Christine">
-                <p class="photo-caption">@xtinezhao</p>
+                <!--
+                    --sx/sy/sr = stack position (small offsets from center)
+                    --ex/ey/er = spread position (scattered across container)
+                    z-index goes from high (top of deck) to low
+                -->
+
+                <!-- row 1 (top): 4 photos -->
+                <div class="photo-item" data-caption="role model in oakland" style="--sx:0px;--sy:0px;--sr:-2deg;--ex:-255px;--ey:-190px;--er:-8deg;z-index:14">
+                    <img src="images/about%20me/me.JPG" alt="">
+                </div>
+                <div class="photo-item" data-caption="my chosen family" style="--sx:5px;--sy:-7px;--sr:4deg;--ex:-85px;--ey:-193px;--er:6deg;z-index:13">
+                    <img src="images/about%20me/babes.jpg" alt="">
+                </div>
+                <div class="photo-item" data-caption="exothermic" style="--sx:-8px;--sy:5px;--sr:-5deg;--ex:85px;--ey:-188px;--er:-11deg;z-index:12">
+                    <img src="images/about%20me/fireworks.JPG" alt="">
+                </div>
+                <div class="photo-item" data-caption="new york city, where i want to be" style="--sx:10px;--sy:-4px;--sr:7deg;--ex:255px;--ey:-172px;--er:8deg;z-index:11">
+                    <img src="images/about%20me/nyc.JPG" alt="">
+                </div>
+                <!-- row 2 (upper-mid): 3 photos, staggered inward -->
+                <div class="photo-item" data-caption="mt. tam, my happy place" style="--sx:-6px;--sy:8px;--sr:-3deg;--ex:-190px;--ey:-63px;--er:13deg;z-index:10">
+                    <img src="images/about%20me/friends.JPG" alt="">
+                </div>
+                <div class="photo-item" data-caption="my final concert with sfsyo, performing chloe et daphnis" style="--sx:7px;--sy:-9px;--sr:2deg;--ex:0px;--ey:-65px;--er:-4deg;z-index:9">
+                    <img src="images/about%20me/flute.jpg" alt="">
+                </div>
+                <div class="photo-item" data-caption="my dog tahoe, aka the love of my life" style="--sx:-10px;--sy:3px;--sr:-6deg;--ex:190px;--ey:-60px;--er:9deg;z-index:8">
+                    <img src="images/about%20me/dog.JPG" alt="">
+                </div>
+                <!-- row 3 (lower-mid): 4 photos -->
+                <div class="photo-item" data-caption="how i love norcal" style="--sx:9px;--sy:7px;--sr:5deg;--ex:-255px;--ey:63px;--er:-7deg;z-index:7">
+                    <img src="images/about%20me/garden.JPG" alt="">
+                </div>
+                <div class="photo-item" data-caption="spring table, 2025" style="--sx:-4px;--sy:-8px;--sr:-4deg;--ex:-85px;--ey:68px;--er:10deg;z-index:6">
+                    <img src="images/about%20me/food.JPG" alt="">
+                </div>
+                <div class="photo-item" data-caption="my best friend and i at ouside lands" style="--sx:13px;--sy:-6px;--sr:3deg;--ex:85px;--ey:60px;--er:-13deg;z-index:5">
+                    <img src="images/about%20me/concert.JPG" alt="">
+                </div>
+                <div class="photo-item" data-caption="my first source of inspiration, my room" style="--sx:-11px;--sy:6px;--sr:-7deg;--ex:255px;--ey:72px;--er:5deg;z-index:4">
+                    <img src="images/about%20me/collage.JPG" alt="">
+                </div>
+                <!-- row 4 (bottom): 3 photos, staggered inward -->
+                <div class="photo-item" data-caption="study of psychology and consciousness" style="--sx:6px;--sy:-5px;--sr:8deg;--ex:-190px;--ey:188px;--er:-6deg;z-index:3">
+                    <img src="images/about%20me/consciousness.jpg" alt="">
+                </div>
+                <div class="photo-item" data-caption="always taking pictures" style="--sx:-7px;--sy:9px;--sr:-2deg;--ex:0px;--ey:190px;--er:8deg;z-index:2">
+                    <img src="images/about%20me/photo.PNG" alt="">
+                </div>
+                <div class="photo-item" data-caption="my window at stanford university" style="--sx:12px;--sy:4px;--sr:5deg;--ex:190px;--ey:185px;--er:-4deg;z-index:1">
+                    <img src="images/about%20me/room.jpeg" alt="">
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── ABOUT TEXT ── -->
+        <div class="about-layout">
+
+            <div class="sidebar">
+                <span class="sidebar-label">about me</span>
             </div>
 
-            <div class="about-text">
-                <div class="section">
+            <div class="content-col">
+                <div class="chapter" data-chapter="1">
                     <h3>who i am</h3>
-                    <p>hi! my name is christine, some of my friends call me cz for short. some also know me as @xtinezhao.</p>
-                    <p>i'm a sophomore from the bay area, and a recent convert to the design major! i've always enjoyed the study of the visual language. in high school, i was the youngest editor of our yearbook publication. now at stanford, i'm creative captain of on call café.</p>
+                    <p>Hi, my name is Christine! Some friends call me CZ, many know me as @xtinezhao. I grew up in many places, but I call sunny Northern California my home.</p>
+                    <p>Currently, I'm a student at Stanford University, pursuing an engineering degree in Product Design (B.S.).</p>
+                    <img src="images/about%20me/mesunset.jpg" alt="" style="width:100%;display:block;margin-top:24px;">
                 </div>
-
-                <div class="section">
+                <div class="chapter" data-chapter="2">
                     <h3>what i care about</h3>
-                    <p>art has always been a huge part of my life. i grew up a classical musician, practicing piano and flute for 16 years and counting. i went to countless art and ceramics classes, a hobby that has carried into my adulthood.</p>
-                    <p>i am a firm believer that design can and should be used for good in this world. i care a lot about mental health in youth — we don't have to accept the increasing loneliness epidemic in this digital age.</p>
-                    <p>currently, i'm looking into the creation of third-spaces, cpgs, and ui/ux design to solve these problems.</p>
+                    <p>Art has always been a part of my life. Through music (going 16+ years strong), photography, pottery... and now through design of digital and physical spaces!</p>
+                    <p>I'm a firm believer that design can and should be used for good in this world. My background in psychology has greatly informed my interest in designing for mental health and community. In this increasingly digital age, I believe that in-person experiences are the key to alleviating loneliness.</p>
+                    <p>Looking into the creation of third-spaces, CPGs, and UI/UX design to solve these problems. In my near future, I hope to pursue a creative career in New York City, and never. stop. learning.</p>
+                    <img src="images/about%20me/collage.JPG" alt="" style="width:100%;display:block;margin-top:24px;">
                 </div>
-
-                <div class="section">
+                <div class="chapter" data-chapter="3">
                     <h3>currently</h3>
-                    <p><strong>reading:</strong> happy place by emily henry</p>
+                    <p><strong>reading:</strong> before the coffee gets cold by toshikazu kawaguchi</p>
                     <p><strong>listening to:</strong> fred again</p>
                     <p><strong>watching:</strong> survivor season 50</p>
                 </div>
             </div>
 
+            <div class="chapter full-width" data-chapter="4">
+                <h3>get in touch</h3>
+                <p>have a project in mind, or just want to say hi?</p>
+                <form class="inquiry-form" id="inquiryForm">
+                    <div class="form-field">
+                        <label for="inquiry-name">name</label>
+                        <input type="text" id="inquiry-name" name="name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="inquiry-email">email</label>
+                        <input type="email" id="inquiry-email" name="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="inquiry-message">message</label>
+                        <textarea id="inquiry-message" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit" id="formSubmit">send</button>
+                    <p class="form-status" id="formStatus"></p>
+                </form>
+            </div>
+
         </div>
+
     </main>
+
+    <!-- ── LIGHTBOX ── -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+        <button class="lightbox-nav prev" id="lightboxPrev">&#x2190;</button>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="">
+            <p class="lightbox-caption" id="lightboxCaption"></p>
+        </div>
+        <button class="lightbox-nav next" id="lightboxNext">&#x2192;</button>
+        <span class="lightbox-counter" id="lightboxCounter"></span>
+    </div>
 
     <footer class="site-footer">
         Christine Zhao © 2026
@@ -304,6 +623,127 @@
             document.getElementById('navToggle').classList.remove('open');
             document.getElementById('navOverlay').classList.remove('visible');
         }
+
+        /* ── PHOTO STACK ── */
+        /* ── INQUIRY FORM ── */
+        document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn    = document.getElementById('formSubmit');
+            const status = document.getElementById('formStatus');
+            btn.disabled = true;
+            btn.textContent = 'sending…';
+            try {
+                const res = await fetch('https://formspree.io/f/mojzegwe', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(e.target)
+                });
+                if (res.ok) {
+                    status.textContent = 'message sent — talk soon!';
+                    e.target.reset();
+                    btn.textContent = 'sent';
+                } else {
+                    throw new Error();
+                }
+            } catch {
+                status.textContent = 'something went wrong — try emailing directly.';
+                btn.disabled = false;
+                btn.textContent = 'send';
+            }
+        });
+
+        /* ── SIDEBAR HIDE ON GET IN TOUCH ── */
+        const sidebarLabel = document.querySelector('.sidebar-label');
+        const contactChapter = document.querySelector('.chapter[data-chapter="4"]');
+
+        new IntersectionObserver((entries) => {
+            sidebarLabel.classList.toggle('hidden', entries[0].isIntersecting);
+        }, { threshold: 0.1 }).observe(contactChapter);
+
+        /* ── PHOTO STACK ── */
+        const stack = document.getElementById('photoStack');
+        let leaveTimer;
+
+        stack.addEventListener('mouseenter', () => {
+            clearTimeout(leaveTimer);
+            stack.classList.add('spread');
+        });
+
+        stack.addEventListener('mouseleave', () => {
+            leaveTimer = setTimeout(() => {
+                if (!lightbox.classList.contains('active')) {
+                    stack.classList.remove('spread');
+                }
+            }, 150);
+        });
+
+        stack.addEventListener('click', (e) => {
+            if (!stack.classList.contains('spread')) {
+                stack.classList.add('spread');
+                e.stopPropagation();
+            }
+        });
+
+        document.addEventListener('click', () => {
+            if (!lightbox.classList.contains('active')) {
+                stack.classList.remove('spread');
+            }
+        });
+
+        /* ── LIGHTBOX ── */
+        const lightbox    = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCap = document.getElementById('lightboxCaption');
+        const lightboxCtr = document.getElementById('lightboxCounter');
+        const items       = Array.from(document.querySelectorAll('.photo-item'));
+        let currentIdx    = 0;
+
+        function openLightbox(idx) {
+            currentIdx = idx;
+            const img = items[idx].querySelector('img');
+            lightboxImg.src = img.src;
+            lightboxCap.textContent = items[idx].dataset.caption || '';
+            lightboxCtr.textContent = (idx + 1) + ' / ' + items.length;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigate(dir) {
+            currentIdx = (currentIdx + dir + items.length) % items.length;
+            lightboxImg.style.opacity = '0';
+            setTimeout(() => {
+                lightboxImg.src = items[currentIdx].querySelector('img').src;
+                lightboxCap.textContent = items[currentIdx].dataset.caption || '';
+                lightboxCtr.textContent = (currentIdx + 1) + ' / ' + items.length;
+                lightboxImg.style.opacity = '1';
+            }, 150);
+        }
+
+        items.forEach((item, idx) => {
+            item.addEventListener('click', (e) => {
+                if (!stack.classList.contains('spread')) return;
+                e.stopPropagation();
+                openLightbox(idx);
+            });
+        });
+
+        document.getElementById('lightboxClose').addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+        document.getElementById('lightboxPrev').addEventListener('click',  (e) => { e.stopPropagation(); navigate(-1); });
+        document.getElementById('lightboxNext').addEventListener('click',  (e) => { e.stopPropagation(); navigate(1); });
+
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape')      closeLightbox();
+            if (e.key === 'ArrowLeft')   navigate(-1);
+            if (e.key === 'ArrowRight')  navigate(1);
+        });
     </script>
 </body>
 </html>
